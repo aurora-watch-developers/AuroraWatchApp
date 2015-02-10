@@ -15,9 +15,9 @@ import android.widget.ImageButton;
  */
 public class MoreFragment extends Fragment {
 
-    ImageButton twitterButton;
-    ImageButton facebookButton;
-    ImageButton flickrButton;
+    Button twitterButton;
+    Button facebookButton;
+    Button flickrButton;
     Button faqButton;
     Button websiteButton;
 
@@ -33,13 +33,12 @@ public class MoreFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        twitterButton = (ImageButton)getView().findViewById(R.id.twitterButton);
-        facebookButton = (ImageButton)getView().findViewById(R.id.facebookButton);
-        flickrButton = (ImageButton)getView().findViewById(R.id.flickrButton);
+        twitterButton = (Button)getView().findViewById(R.id.twitterButton);
+        facebookButton = (Button)getView().findViewById(R.id.facebookButton);
+        flickrButton = (Button)getView().findViewById(R.id.flickrButton);
         faqButton = (Button)getView().findViewById(R.id.faqButton);
         websiteButton = (Button)getView().findViewById(R.id.awUrlButton);
 
-        //TODO: Refactor the below to one OnClickListner and switch depending on calling view?
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

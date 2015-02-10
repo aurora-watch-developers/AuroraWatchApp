@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="60">
+        android:layout_weight="55">
 
     </LinearLayout>
 
@@ -17,7 +17,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="15"
+        android:layout_weight="45"
         android:gravity="center_vertical">
 
         <TextView
@@ -52,42 +52,37 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="25"
-        android:gravity="center_horizontal">
-
-        <ImageButton
-            android:layout_width="wrap_content"
+        <Button
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/twitterButton"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/twitter"
-            android:layout_margin="10dp"
-            android:scaleType="fitCenter" />
+            android:drawableLeft="@drawable/twitter"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/awTwitter" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
+        <Button
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/facebookButton"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/facebook"
-            android:layout_margin="10dp"
-            android:scaleType="fitCenter" />
+            android:drawableLeft="@drawable/facebook"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/awFacebook" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
+        <Button
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/flickrButton"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/flickr"
-            android:layout_margin="10dp"
-            android:scaleType="fitCenter" />
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/flickr"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/awFlickr" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -13,4 +13,7 @@
     <string name="license">AuroraWatch UK alerts data is provided by Lancaster University, UK using data from the SAMNET and/or AuroraWatchNet magnetometer networks.</string>
     <string name="awUrlButton">AuroraWatch UK Website</string>
     <string name="faq">FAQs</string>
+    <string name="awTwitter">AuroraWatch UK on Twitter</string>
+    <string name="awFacebook">AuroraWatch UK on Facebook</string>
+    <string name="awFlickr">AuroraWatch UK on Flickr</string>
 </resources>
