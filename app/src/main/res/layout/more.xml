@@ -32,25 +32,24 @@
             android:layout_marginBottom="5dp" />
 
         <Button
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/awUrlButton"
             android:id="@+id/awUrlButton"
+            android:drawableLeft="@drawable/aw"
+            android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="5dp"
-            android:clickable="true" />
+            android:text="@string/awUrlButton" />
 
         <Button
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/faq"
             android:id="@+id/faqButton"
+            android:drawableLeft="@drawable/question"
+            android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:layout_marginRight="20dp"
+            android:text="@string/faq" />
 
         <Button
             android:layout_width="fill_parent"
