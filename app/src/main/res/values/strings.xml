@@ -24,4 +24,8 @@
     <string name="awFlickr">AuroraWatch UK on Flickr</string>
     <string name="notifications">Notifications</string>
     <string name="minalertlabel">Minimum alert level</string>
+    <string name="alertNone">None</string>
+    <string name="alertMinor">Minor</string>
+    <string name="alertAmber">Amber</string>
+    <string name="alertRed">Red</string>
 </resources>

@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.ImageButton;
 
+import uk.ac.lancs.aurorawatch.ImageFunctions;
 import uk.ac.lancs.aurorawatch.R;
 
 /**
