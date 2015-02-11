@@ -95,7 +95,7 @@ public class MoreFragment extends Fragment {
             }
         });
 
-        alertAmber.setOnClickListener(new View.OnClickListener(){
+        alertMin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.amber;
