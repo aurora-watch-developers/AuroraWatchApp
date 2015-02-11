@@ -22,4 +22,6 @@
     <string name="awTwitter">AuroraWatch UK on Twitter</string>
     <string name="awFacebook">AuroraWatch UK on Facebook</string>
     <string name="awFlickr">AuroraWatch UK on Flickr</string>
+    <string name="notifications">Notifications</string>
+    <string name="minalertlabel">Minimum alert level</string>
 </resources>

@@ -1,5 +1,10 @@
 package uk.ac.lancs.aurorawatch.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -22,6 +28,7 @@ public class MoreFragment extends Fragment {
     Button flickrButton;
     Button faqButton;
     Button websiteButton;
+    Boolean mMeasured = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +72,26 @@ public class MoreFragment extends Fragment {
                 openUrl("http://aurorawatch.lancs.ac.uk/");
             }
         });
+
+        this.getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (!mMeasured) {
+                    mMeasured = true;
+                    resizeButtonIcons();
+                }
+            }
+        });
     }
+
+    public void resizeButtonIcons() {
+        resizeButtonImage(twitterButton);
+        resizeButtonImage(facebookButton);
+        resizeButtonImage(flickrButton);
+        resizeButtonImage(faqButton);
+        resizeButtonImage(websiteButton);
+    }
+
 
     private void openUrl(String url) {
         Uri destination = Uri.parse(url);
@@ -73,5 +99,13 @@ public class MoreFragment extends Fragment {
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+
+    private void resizeButtonImage(Button button)
+    {
+        Drawable[] buttonDrawables = button.getCompoundDrawables();
+        Bitmap currentImage = ((BitmapDrawable)(buttonDrawables[0])).getBitmap();
+        Bitmap resizedImage = ImageFunctions.getResizedBitmap(currentImage, button.getHeight());
+        button.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(resizedImage),null,null,null);
     }
 }

@@ -11,6 +11,15 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="55">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/notifications"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +48,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/awUrlButton" />
+            android:text="@string/awUrlButton"
+            android:maxHeight="17dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -49,7 +59,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/faq" />
+            android:text="@string/faq"
+            android:maxHeight="17dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -59,7 +70,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/awTwitter" />
+            android:text="@string/awTwitter"
+            android:maxHeight="17dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -69,7 +81,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/awFacebook" />
+            android:text="@string/awFacebook"
+            android:maxHeight="17dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -80,7 +93,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/awFlickr" />
+            android:text="@string/awFlickr"
+            android:maxHeight="17dp" />
 
     </LinearLayout>
 
