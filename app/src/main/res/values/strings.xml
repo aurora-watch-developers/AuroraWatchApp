@@ -11,6 +11,12 @@
     <string name="startService">Start service</string>
     <string name="showApp">Show AuroraWatch UK</string>
     <string name="license">AuroraWatch UK alerts data is provided by Lancaster University, UK using data from the SAMNET and/or AuroraWatchNet magnetometer networks.</string>
+    <string name="alertLevelSummary">Amber alert: possible aurora</string>
+    <string name="alertLevelDetail">Aurora is likely to be visible from Scotland, northern England and Northern Ireland</string>
+    <string name="disturbanceLevelLabel">Disturbance level</string>
+    <string name="disturbanceLevelValue">101.9</string>
+    <string name="disturbanceLevelUnit">nT</string>
+    <string name="retrievalTime">Recorded:\n2015-01-07 10:44 (UT)\nLancaster #1, England</string>
     <string name="awUrlButton">AuroraWatch UK Website</string>
     <string name="faq">FAQs</string>
     <string name="awTwitter">AuroraWatch UK on Twitter</string>
