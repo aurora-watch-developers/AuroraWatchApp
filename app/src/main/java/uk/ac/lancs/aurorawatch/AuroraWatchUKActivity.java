@@ -16,6 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import uk.ac.lancs.aurorawatch.service.AuroraWatchUK;
+
 public class AuroraWatchUKActivity extends Activity {
 
     private Context context;

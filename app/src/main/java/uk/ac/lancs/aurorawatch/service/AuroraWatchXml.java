@@ -1,4 +1,4 @@
-package uk.ac.lancs.aurorawatch;
+package uk.ac.lancs.aurorawatch.service;
 
 import java.util.Date;
 
