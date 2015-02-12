@@ -44,13 +44,13 @@
             <TextView
                 style="@style/OrangeText"
                 android:textSize="64sp"
-                android:text="@string/disturbanceLevelValue"
                 android:id="@+id/disturbanceLevelValue"
                 android:layout_gravity="bottom"/>
 
             <TextView
                 style="@style/OrangeText"
-                android:text="@string/disturbanceLevelUnit"
+                android:text="unknown"
+                android:id="@+id/disturbanceLevelUnit"
                 android:layout_gravity="bottom"/>
 
         </LinearLayout>

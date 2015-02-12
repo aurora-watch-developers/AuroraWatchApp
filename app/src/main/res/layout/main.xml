@@ -12,4 +12,11 @@
         android:contentDescription="@string/aurorawatchLogoDesc"
         android:src="@drawable/ic_launcher_aw" />
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="uk.ac.lancs.aurorawatch.fragment.NowFragment"
+        android:id="@+id/fragment"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>
