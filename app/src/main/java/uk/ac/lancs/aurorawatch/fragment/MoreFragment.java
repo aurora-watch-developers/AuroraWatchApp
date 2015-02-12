@@ -1,20 +1,20 @@
 package uk.ac.lancs.aurorawatch.fragment;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ScaleDrawable;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.content.SharedPreferences;
 
 import uk.ac.lancs.aurorawatch.AlertLevel;
 import uk.ac.lancs.aurorawatch.ImageFunctions;
@@ -36,6 +36,7 @@ public class MoreFragment extends Fragment {
     Button alertRed;
     Boolean mMeasured = false;
     AlertLevel alertLevel;
+    String appName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +50,7 @@ public class MoreFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        appName = getString(R.string.appName);
         twitterButton = (Button)getView().findViewById(R.id.twitterButton);
         facebookButton = (Button)getView().findViewById(R.id.facebookButton);
         flickrButton = (Button)getView().findViewById(R.id.flickrButton);
@@ -84,25 +86,21 @@ public class MoreFragment extends Fragment {
             }
         });
 
+        loadAlertLevel();
+
         alertNone.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.none;
-                alertNone.setTextColor(Color.YELLOW);
-                alertMin.setTextColor(Color.WHITE);
-                alertAmber.setTextColor(Color.WHITE);
-                alertRed.setTextColor(Color.WHITE);
+                setAlertButton();
             }
         });
 
-        alertMin.setOnClickListener(new View.OnClickListener(){
+        alertMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertLevel = AlertLevel.amber;
-                alertNone.setTextColor(Color.WHITE);
-                alertMin.setTextColor(Color.YELLOW);
-                alertAmber.setTextColor(Color.WHITE);
-                alertRed.setTextColor(Color.WHITE);
+                alertLevel = AlertLevel.minor;
+                setAlertButton();
             }
         });
 
@@ -110,10 +108,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.amber;
-                alertNone.setTextColor(Color.WHITE);
-                alertMin.setTextColor(Color.WHITE);
-                alertAmber.setTextColor(Color.YELLOW);
-                alertRed.setTextColor(Color.WHITE);
+                setAlertButton();
             }
         });
 
@@ -121,10 +116,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.red;
-                alertNone.setTextColor(Color.WHITE);
-                alertMin.setTextColor(Color.WHITE);
-                alertAmber.setTextColor(Color.WHITE);
-                alertRed.setTextColor(Color.YELLOW);
+                setAlertButton();
             }
         });
 
@@ -164,5 +156,40 @@ public class MoreFragment extends Fragment {
         Bitmap currentImage = ((BitmapDrawable)(buttonDrawables[0])).getBitmap();
         Bitmap resizedImage = ImageFunctions.getResizedBitmap(currentImage, button.getHeight());
         button.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(resizedImage),null,null,null);
+    }
+
+    private void setAlertButton()
+    {
+        alertNone.setTextColor(alertLevel == AlertLevel.none ?  Color.YELLOW : Color.WHITE);
+        alertMin.setTextColor(alertLevel == AlertLevel.minor ?  Color.YELLOW : Color.WHITE);
+        alertAmber.setTextColor(alertLevel == AlertLevel.amber ?  Color.YELLOW : Color.WHITE);
+        alertRed.setTextColor(alertLevel == AlertLevel.red ?  Color.YELLOW : Color.WHITE);
+    }
+
+    public void loadAlertLevel()
+    {
+        try {
+            SharedPreferences settings = getActivity().getSharedPreferences(appName, 0);
+            alertLevel = AlertLevel.values()[settings.getInt("alertLevel", 0)];
+            setAlertButton();
+        }
+        catch (Exception ex)
+        {
+            Log.e(appName, "Loading prefs: " + ex.getMessage());
+        }
+    }
+
+    public void saveAlertLevel()
+    {
+        try {
+            SharedPreferences settings = getActivity().getSharedPreferences(appName, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("alertLevel", alertLevel.ordinal());
+            editor.commit();
+        }
+        catch (Exception ex)
+        {
+            Log.e(appName,"Saving prefs: " + ex.getMessage());
+        }
     }
 }
