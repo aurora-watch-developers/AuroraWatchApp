@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <service  android:name=".AuroraWatchUK"/>
+        <service  android:name=".service.AuroraWatchUK"/>
         <receiver
             android:name=".AuroraWatchUKReceiver"
             android:enabled="true"

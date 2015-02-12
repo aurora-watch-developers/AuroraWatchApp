@@ -1,4 +1,4 @@
-package uk.ac.lancs.aurorawatch;
+package uk.ac.lancs.aurorawatch.service;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -28,11 +28,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import uk.ac.lancs.aurorawatch.AuroraWatchUKActivity;
+import uk.ac.lancs.aurorawatch.R;
 
 public class AuroraWatchUK extends Service implements Runnable {
     static public final String ALARM_ACTION = "uk.ac.lancs.aurorawatch.ALARM";

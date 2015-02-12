@@ -7,6 +7,8 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
+import uk.ac.lancs.aurorawatch.service.AuroraWatchUK;
+
 public class AuroraWatchUKReceiver extends BroadcastReceiver {
 
     @Override

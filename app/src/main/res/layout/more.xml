@@ -11,6 +11,65 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="55">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/notifications"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/minalertlabel"
+                android:id="@+id/textView2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+        <Button
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:text="@string/alertNone"
+            android:id="@+id/btnAlertNone"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#ffffff00" />
+
+            <Button
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:text="@string/alertMinor"
+                android:id="@+id/btnAlertMinor" />
+
+            <Button
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:text="@string/alertAmber"
+                android:id="@+id/btnAlertAmber" />
+
+            <Button
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:text="@string/alertRed"
+                android:id="@+id/btnAlertRed" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +98,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/awUrlButton" />
+            android:text="@string/awUrlButton"
+            android:maxHeight="17dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -49,7 +109,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/faq" />
+            android:text="@string/faq"
+            android:maxHeight="17dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -59,7 +120,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/awTwitter" />
+            android:text="@string/awTwitter"
+            android:maxHeight="17dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -69,7 +131,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/awFacebook" />
+            android:text="@string/awFacebook"
+            android:maxHeight="17dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -80,7 +143,8 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/awFlickr" />
+            android:text="@string/awFlickr"
+            android:maxHeight="17dp" />
 
     </LinearLayout>
 
