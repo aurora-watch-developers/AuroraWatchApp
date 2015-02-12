@@ -133,6 +133,13 @@ public class MoreFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        saveAlertLevel();
+    }
+
     public void resizeButtonIcons() {
         resizeButtonImage(twitterButton);
         resizeButtonImage(facebookButton);
