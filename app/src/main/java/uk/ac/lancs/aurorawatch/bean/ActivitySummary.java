@@ -41,6 +41,15 @@ public class ActivitySummary {
         this.statusNumber = statusNumber;
     }
 
+    public boolean isValid() {
+        return station != null && station.trim().length() > 0
+                && creationTime != null && creationTime.trim().length() > 0
+                && statusText != null && statusText.trim().length() > 0
+                && (statusText.equalsIgnoreCase("green") || statusText.equalsIgnoreCase("yellow")
+                    || statusText.equalsIgnoreCase("amber") || statusText.equalsIgnoreCase("red"))
+                && statusNumber != null && statusNumber.trim().length() > 0;
+    }
+
     public static ActivitySummary parse(BufferedReader br) throws IOException {
         ActivitySummary summary = new ActivitySummary();
         String line;

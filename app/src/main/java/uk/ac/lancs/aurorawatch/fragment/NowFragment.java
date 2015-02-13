@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -30,8 +31,11 @@ import uk.ac.lancs.aurorawatch.service.ActivityTxtService;
 @SuppressLint("NewApi")
 public class NowFragment extends Fragment {
 
+    private TextView alertLevelSummary;
+    private TextView alertLevelDetail;
     private TextView disturbanceLevelValue;
     private TextView disturbanceLevelUnit;
+    private TextView retrievalTime;
 
     private BroadcastReceiver receiver;
     private String cacheFile;
@@ -63,13 +67,45 @@ public class NowFragment extends Fragment {
 
     private void updateUI(String cacheFile) {
         ActivitySummary summary = readActivityTxt(cacheFile);
-        if (summary == null) {
+        if (summary == null || !summary.isValid()) {
             return;
         }
-        if (summary.getStatusNumber() != null) {
-            disturbanceLevelValue.setText(summary.getStatusNumber());
-            disturbanceLevelUnit.setText(getString(R.string.disturbanceLevelUnit));
+
+        // Use the status to select the right text and color
+        Resources res = getResources();
+        int color = 0, index = 0; // these defaults are unused due to summary.isValid() check above
+        if (summary.getStatusText().equalsIgnoreCase("green")) {
+            index = 0;
+            color = 0xff33ff33;
+
+        } else if (summary.getStatusText().equalsIgnoreCase("yellow")) {
+            index = 1;
+            color = 0xffffff00;
+
+        } else if (summary.getStatusText().equalsIgnoreCase("amber")) {
+            index = 2;
+            color = 0xffff9900;
+
+        } else if (summary.getStatusText().equalsIgnoreCase("red")) {
+            index = 3;
+            color = 0xffff0000;
         }
+
+        // Coloured top bar
+        alertLevelSummary.setText(res.getStringArray(R.array.status_summary)[index]);
+        ((View)alertLevelSummary.getParent()).setBackgroundColor(color);
+
+        // Raw number
+        disturbanceLevelValue.setText(summary.getStatusNumber());
+        disturbanceLevelValue.setTextColor(color);
+        disturbanceLevelUnit.setTextColor(color);
+
+        // Detail message "Aurora is likely to be visible from..."
+        alertLevelDetail.setText(res.getStringArray(R.array.status_detail)[index]);
+
+        // Station and timestamp
+        retrievalTime.setText(String.format(res.getString(R.string.retrievalTime),
+                summary.getStation(), summary.getCreationTime()));
     }
 
     @Override
@@ -78,8 +114,11 @@ public class NowFragment extends Fragment {
 
         View view = getView();
         if (view != null) {
+            alertLevelSummary = (TextView) getView().findViewById(R.id.alertLevelSummary);
+            alertLevelDetail = (TextView) getView().findViewById(R.id.alertLevelDetail);
             disturbanceLevelValue = (TextView) getView().findViewById(R.id.disturbanceLevelValue);
             disturbanceLevelUnit = (TextView) getView().findViewById(R.id.disturbanceLevelUnit);
+            retrievalTime = (TextView) getView().findViewById(R.id.retrievalTime);
 
             updateUI(cacheFile);
         }
