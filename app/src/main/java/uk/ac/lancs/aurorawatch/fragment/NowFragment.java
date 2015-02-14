@@ -1,13 +1,12 @@
 package uk.ac.lancs.aurorawatch.fragment;
 
-import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +27,6 @@ import uk.ac.lancs.aurorawatch.service.ActivityTxtService;
  * Fragment showing the "now" view with current disturbance level,
  * alert status and time retrieved.
  */
-@SuppressLint("NewApi")
 public class NowFragment extends Fragment {
 
     private TextView alertLevelSummary;
@@ -157,5 +155,11 @@ public class NowFragment extends Fragment {
     public void onDestroy() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
         super.onDestroy();
+    }
+
+    public static NowFragment newInstance() {
+        NowFragment fragment = new NowFragment();
+
+        return fragment;
     }
 }
