@@ -21,7 +21,10 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.AuroraWatchUK" />
+        <service
+            android:name=".service.ActivityTxtService"
+            android:exported="false" />
+
         <receiver
             android:name=".AuroraWatchUKReceiver"
             android:enabled="true"
@@ -33,6 +36,7 @@
                 <action android:name="uk.ac.lancs.aurorawatch.ALARM" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

@@ -9,14 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="10"
-        android:background="#ff9504"
         android:gravity="center_vertical"
         android:layout_marginBottom="100dp">
 
         <TextView
             style="@style/AWTextView"
             android:textStyle="bold"
-            android:text="@string/alertLevelSummary"
             android:id="@+id/alertLevelSummary"
             android:textColor="#1f0a00"
             android:layout_gravity="center_horizontal"
@@ -42,14 +40,14 @@
             android:gravity="center_horizontal">
 
             <TextView
-                style="@style/OrangeText"
+                style="@style/AWTextView"
                 android:textSize="64sp"
-                android:text="@string/disturbanceLevelValue"
                 android:id="@+id/disturbanceLevelValue"
                 android:layout_gravity="bottom"/>
 
             <TextView
-                style="@style/OrangeText"
+                style="@style/AWTextView"
+                android:id="@+id/disturbanceLevelUnit"
                 android:text="@string/disturbanceLevelUnit"
                 android:layout_gravity="bottom"/>
 
