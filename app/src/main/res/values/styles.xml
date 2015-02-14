@@ -19,10 +19,6 @@
         <item name="android:background">#ff9504</item>
     </style>
 
-    <style name="OrangeText" parent="AWTextView">
-        <item name="android:textColor">#ff9504</item>
-    </style>
-
 
 
 </resources>

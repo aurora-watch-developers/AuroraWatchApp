@@ -14,9 +14,20 @@
     <string name="alertLevelSummary">Amber alert: possible aurora</string>
     <string name="alertLevelDetail">Aurora is likely to be visible from Scotland, northern England and Northern Ireland</string>
     <string name="disturbanceLevelLabel">Disturbance level</string>
-    <string name="disturbanceLevelValue">101.9</string>
     <string name="disturbanceLevelUnit">nT</string>
-    <string name="retrievalTime">Recorded:\n2015-01-07 10:44 (UT)\nLancaster #1, England</string>
+    <string-array name="status_summary">
+        <item>No significant activity</item>
+        <item>Minor geomagnetic activity</item>
+        <item>Amber alert: possible aurora</item>
+        <item>Red alert: aurora likely</item>
+    </string-array>
+    <string-array name="status_detail">
+        <item>Aurora is unlikely to be seen from anywhere in the UK</item>
+        <item>Aurora is unlikely to be visible from the UK except perhaps the extreme north of Scotland</item>
+        <item>Aurora is likely to be visible from Scotland, northern England and Northern Ireland</item>
+        <item>It is likely that aurora will be visible from everywhere in the UK</item>
+    </string-array>
+    <string name="retrievalTime">Recorded:\n%1$s\n%2$s</string>
     <string name="awUrlButton">AuroraWatch UK Website</string>
     <string name="faq">FAQs</string>
     <string name="awTwitter">AuroraWatch UK on Twitter</string>
