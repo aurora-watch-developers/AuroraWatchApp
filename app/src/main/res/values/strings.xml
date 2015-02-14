@@ -39,4 +39,9 @@
     <string name="alertMinor">Minor</string>
     <string name="alertAmber">Amber</string>
     <string name="alertRed">Red</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_section1">Right Now</string>
+    <string name="title_section2">More…</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

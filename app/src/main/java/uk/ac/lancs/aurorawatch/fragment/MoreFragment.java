@@ -199,4 +199,9 @@ public class MoreFragment extends Fragment {
             Log.e(appName,"Saving prefs: " + ex.getMessage());
         }
     }
+
+    public static MoreFragment newInstance() {
+        return new MoreFragment();
+        //If needed, arguments can be instatiated here using a Bundle.
+    }
 }
