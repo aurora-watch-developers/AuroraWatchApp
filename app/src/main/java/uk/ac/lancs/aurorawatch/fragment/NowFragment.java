@@ -158,8 +158,6 @@ public class NowFragment extends Fragment {
     }
 
     public static NowFragment newInstance() {
-        NowFragment fragment = new NowFragment();
-
-        return fragment;
+        return new NowFragment();
     }
 }

@@ -201,8 +201,7 @@ public class MoreFragment extends Fragment {
     }
 
     public static MoreFragment newInstance() {
-        MoreFragment fragment = new MoreFragment();
+        return new MoreFragment();
         //If needed, arguments can be instatiated here using a Bundle.
-        return fragment;
     }
 }
