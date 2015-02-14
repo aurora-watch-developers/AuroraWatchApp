@@ -33,8 +33,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import uk.ac.lancs.aurorawatch.AuroraWatchUKActivity;
 import uk.ac.lancs.aurorawatch.R;
+import uk.ac.lancs.aurorawatch.activity.MainActivity;
 
 public class AuroraWatchUK extends Service implements Runnable {
     static public final String ALARM_ACTION = "uk.ac.lancs.aurorawatch.ALARM";
@@ -168,7 +168,7 @@ public class AuroraWatchUK extends Service implements Runnable {
         // The PendingIntent to launch our activity if the user selects this
         // notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, AuroraWatchUKActivity.class), 0);
+                new Intent(this, MainActivity.class), 0);
         // LocalServiceActivities.Controller.class), 0);
 
         // Set the info for the views that show in the notification panel.
@@ -247,7 +247,7 @@ public class AuroraWatchUK extends Service implements Runnable {
                         CharSequence contentTitle = getString(R.string.appName);
                         CharSequence contentText = currentXml.currentState.description;
                         Intent notificationIntent = new Intent(this,
-                                AuroraWatchUKActivity.class);
+                                MainActivity.class);
                         PendingIntent contentIntent = PendingIntent.getActivity(
                                 this, 0, notificationIntent, 0);
 
