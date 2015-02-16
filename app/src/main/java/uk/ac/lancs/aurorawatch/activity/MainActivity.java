@@ -57,20 +57,24 @@ public class MainActivity extends ActionBarActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, NowFragment.newInstance())
                         .commit();
+                mTitle = "Now";
                 break;
             case 1:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, MoreFragment.newInstance())
                         .commit();
+                mTitle = "More";
                 break;
             case 2:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, Past24HrFragment.newInstance())
                         .commit();
+                mTitle = "Past 24 Hours";
                 break;
             default:
                 throw new IllegalArgumentException("invalid menu index");
         }
+        restoreActionBar();
     }
 
     public void restoreActionBar() {
