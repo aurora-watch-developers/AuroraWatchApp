@@ -1,10 +1,12 @@
 package uk.ac.lancs.aurorawatch.fragment;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import uk.ac.lancs.aurorawatch.R;
 
@@ -13,13 +15,15 @@ import uk.ac.lancs.aurorawatch.R;
  */
 public class Past24HrFragment extends Fragment {
 
+    ImageView image;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         View view = getView();
         if (view != null) {
-
+            image = (ImageView)getActivity().findViewById(R.id.imgPast24Hrs);
 
         }
     }
@@ -45,5 +49,11 @@ public class Past24HrFragment extends Fragment {
 
     public static Past24HrFragment newInstance() {
         return new Past24HrFragment();
+    }
+
+    private void DownloadImage()
+    {
+        //http://aurorawatch.lancs.ac.uk/summary/aurorawatch_new/plots/awn_lan1/rolling.png
+        
     }
 }
