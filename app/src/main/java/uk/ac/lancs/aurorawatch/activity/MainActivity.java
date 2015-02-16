@@ -17,6 +17,7 @@ import uk.ac.lancs.aurorawatch.R;
 import uk.ac.lancs.aurorawatch.fragment.MoreFragment;
 import uk.ac.lancs.aurorawatch.fragment.NavigationDrawerFragment;
 import uk.ac.lancs.aurorawatch.fragment.NowFragment;
+import uk.ac.lancs.aurorawatch.fragment.Past24HrFragment;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -60,6 +61,11 @@ public class MainActivity extends ActionBarActivity
             case 1:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, MoreFragment.newInstance())
+                        .commit();
+                break;
+            case 2:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, Past24HrFragment.newInstance())
                         .commit();
                 break;
             default:
