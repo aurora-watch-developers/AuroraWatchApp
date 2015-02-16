@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import uk.ac.lancs.aurorawatch.ImageFunctions;
 import uk.ac.lancs.aurorawatch.R;
 
 /**
@@ -16,6 +17,7 @@ import uk.ac.lancs.aurorawatch.R;
 public class Past24HrFragment extends Fragment {
 
     ImageView image;
+    String savedFile;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -24,14 +26,21 @@ public class Past24HrFragment extends Fragment {
         View view = getView();
         if (view != null) {
             image = (ImageView)getActivity().findViewById(R.id.imgPast24Hrs);
-
+            savedFile = getActivity().getFilesDir() + "/24hr.png";
         }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        //refresh the image
+        DownloadImage();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -53,7 +62,8 @@ public class Past24HrFragment extends Fragment {
 
     private void DownloadImage()
     {
-        //http://aurorawatch.lancs.ac.uk/summary/aurorawatch_new/plots/awn_lan1/rolling.png
-        
+        String url = "http://aurorawatch.lancs.ac.uk/summary/aurorawatch_new/plots/awn_lan1/rolling.png";
+        ImageFunctions imageFunctions = new ImageFunctions();
+        imageFunctions.downloadImageToFile(url, savedFile);
     }
 }
