@@ -1,9 +1,11 @@
 package uk.ac.lancs.aurorawatch.fragment;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,8 +18,11 @@ import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Properties;
 
 import uk.ac.lancs.aurorawatch.bean.ActivitySummary;
 import uk.ac.lancs.aurorawatch.R;
@@ -37,6 +42,31 @@ public class NowFragment extends Fragment {
 
     private BroadcastReceiver receiver;
     private String cacheFile;
+
+    private Properties props;
+
+    private static String PROP_PREFIX = "now.";
+    private static String PROP_STATUS_SUMMARY = PROP_PREFIX + "status.summary.";
+    private static String PROP_STATUS_DETAIL = PROP_PREFIX + "status.detail.";
+    private static String PROP_STATUS_COLOR = PROP_PREFIX + "status.color.";
+    private static String PROP_STATION = PROP_PREFIX + "station.";
+
+
+    private void loadProperties() {
+        props = new Properties();
+        try {
+            //load a properties file
+            Activity a = getActivity();
+            Context c = a.getBaseContext();
+            AssetManager am = c.getAssets();
+            am.open("messages.properties");
+
+            props.load(getActivity().getBaseContext().getAssets().open("messages.properties"));
+
+        } catch (IOException e) {
+            Log.e(NowFragment.class.getSimpleName(), "Error reading messages.properties", e);
+        }
+    }
 
     private ActivitySummary readActivityTxt(String path) {
         File cacheFile = new File(path);
@@ -66,31 +96,22 @@ public class NowFragment extends Fragment {
     private void updateUI(String cacheFile) {
         ActivitySummary summary = readActivityTxt(cacheFile);
         if (summary == null || !summary.isValid()) {
+            Log.w(NowFragment.class.getSimpleName(), "Invalid activity.txt");
+            return;
+        }
+
+        String status = summary.getStatusText().toLowerCase();
+        if (!(Arrays.asList("green", "yellow", "amber", "red")).contains(status)) {
+            Log.w(NowFragment.class.getSimpleName(), "Unknown status " + status);
             return;
         }
 
         // Use the status to select the right text and color
-        Resources res = getResources();
-        int color = 0, index = 0; // these defaults are unused due to summary.isValid() check above
-        if (summary.getStatusText().equalsIgnoreCase("green")) {
-            index = 0;
-            color = 0xff33ff33;
-
-        } else if (summary.getStatusText().equalsIgnoreCase("yellow")) {
-            index = 1;
-            color = 0xffffff00;
-
-        } else if (summary.getStatusText().equalsIgnoreCase("amber")) {
-            index = 2;
-            color = 0xffff9900;
-
-        } else if (summary.getStatusText().equalsIgnoreCase("red")) {
-            index = 3;
-            color = 0xffff0000;
-        }
-
         // Coloured top bar
-        alertLevelSummary.setText(res.getStringArray(R.array.status_summary)[index]);
+        String statusSummary = props.getProperty(PROP_STATUS_SUMMARY + status);
+        String colorString = props.getProperty(PROP_STATUS_COLOR + status);
+        int color = (int)Long.parseLong(colorString, 16);
+        alertLevelSummary.setText(statusSummary);
         ((View)alertLevelSummary.getParent()).setBackgroundColor(color);
 
         // Raw number
@@ -99,16 +120,20 @@ public class NowFragment extends Fragment {
         disturbanceLevelUnit.setTextColor(color);
 
         // Detail message "Aurora is likely to be visible from..."
-        alertLevelDetail.setText(res.getStringArray(R.array.status_detail)[index]);
+        String statusDetail = props.getProperty(PROP_STATUS_DETAIL + status);
+        alertLevelDetail.setText(statusDetail);
 
         // Station and timestamp
+        Resources res = getResources();
+        String station = props.getProperty(PROP_STATION + summary.getStation(), summary.getStation());
         retrievalTime.setText(String.format(res.getString(R.string.retrievalTime),
-                summary.getStation(), summary.getCreationTime()));
+                station, summary.getCreationTime()));
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        loadProperties();
 
         View view = getView();
         if (view != null) {
