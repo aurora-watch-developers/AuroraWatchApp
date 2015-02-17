@@ -3,6 +3,7 @@ package uk.ac.lancs.aurorawatch;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.FileOutputStream;
@@ -39,48 +40,60 @@ public class ImageFunctions {
         return resizedBitmap;
     }
 
-    public void downloadImageToFile(String imageurl, String filename) {
-        InputStream in = null;
+    public void downloadImageToFile(final String imageurl, final String filename) {
 
-        try {
-            Log.i("URL", imageurl);
-            URL url = new URL(imageurl);
-            URLConnection urlConn = url.openConnection();
+        final Handler uiUpdater = new Handler();
+        Thread th = new Thread(new Runnable() {
+            public void run() {
+                InputStream in = null;
 
-            HttpURLConnection httpConn = (HttpURLConnection) urlConn;
+                try {
+                    Log.i("URL", imageurl);
+                    URL url = new URL(imageurl);
+                    URLConnection urlConn = url.openConnection();
 
-            httpConn.connect();
+                    HttpURLConnection httpConn = (HttpURLConnection) urlConn;
 
-            in = httpConn.getInputStream();
+                    httpConn.connect();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Bitmap bmp = BitmapFactory.decodeStream(in);
+                    in = httpConn.getInputStream();
 
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(filename);
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-            //raise event here.
-            EventManager.triggerEvent(this, new ImageDownloadEvent());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+                Bitmap bmp = BitmapFactory.decodeStream(in);
 
+                FileOutputStream out = null;
+                try {
+                    out = new FileOutputStream(filename);
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                    //raise event here as we downloaded an image...
+                    uiUpdater.post(new Runnable(){
+                        @Override
+                        public void run()
+                        {
+                            EventManager.triggerEvent(this, new ImageDownloadEvent());
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (out != null) {
+                            out.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        th.start();
     }
 
-    class ImageDownloadEvent extends EventObject {}
+    public class ImageDownloadEvent extends EventObject {}
 }
