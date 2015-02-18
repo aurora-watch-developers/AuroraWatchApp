@@ -1,20 +1,13 @@
 package uk.ac.lancs.aurorawatch.service;
 
 import android.app.IntentService;
-import android.content.Intent;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 /**
  * An {@link IntentService} subclass for loading the activity.txt from
@@ -71,83 +64,7 @@ public class ActivityTxtService extends IntentService {
             return;
         }
 
-        if (!cacheFile.exists()) {
-            try {
-                boolean result = cacheFile.createNewFile();
-                if (!result) {
-                    Log.w(ActivityTxtService.class.getSimpleName(), "Create " + ACTIVITY_TXT_URL + " returned false");
-                }
-            } catch (IOException e) {
-                Log.e(ActivityTxtService.class.getSimpleName(), "Error creating " + ACTIVITY_TXT_URL, e);
-            }
-        }
-
-        new HttpRequestTask().execute(ACTIVITY_TXT_URL, cacheFile.getAbsolutePath());
-
-        if (cacheFile.exists()) {
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        }
-
-    }
-
-    //TODO this shares a lot of code with AuroraWatchUK, consider refactoring
-    class HttpRequestTask extends AsyncTask<String, Void, Void> {
-
-        protected Void doInBackground(String... params) {
-
-            String urlString = params[0];
-            String outFile = params[1];
-            HttpURLConnection conn = null;
-            InputStream in = null;
-            OutputStream out = null;
-
-            try {
-                URL url = new URL(urlString);
-
-                Log.i(getClass().getSimpleName(), "Fetching " + url.toString());
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-
-
-                in = new BufferedInputStream(conn.getInputStream());
-                out = new FileOutputStream(outFile);
-
-                byte data[] = new byte[1024];
-                int count;
-                while ((count = in.read(data)) != -1) {
-                    out.write(data, 0, count);
-                }
-
-                out.flush();
-                out.close();
-                in.close();
-
-                Log.i(getClass().getSimpleName(), "Fetched " + urlString);
-
-            } catch (IOException e) {
-                Log.e(getClass().getSimpleName(), "Could not fetch " + urlString, e);
-
-
-            } finally {
-                if (conn != null) {
-                    conn.disconnect();
-                }
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException ignore) {
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException ignore) {
-                    }
-                }
-            }
-            return null;
-        }
-
-
+        HttpUtil.downloadFile(ACTIVITY_TXT_URL, cacheFile.getAbsolutePath());
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

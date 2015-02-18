@@ -1,12 +1,9 @@
 package uk.ac.lancs.aurorawatch.fragment;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -16,15 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Properties;
 
-import uk.ac.lancs.aurorawatch.bean.ActivitySummary;
 import uk.ac.lancs.aurorawatch.R;
+import uk.ac.lancs.aurorawatch.bean.ActivitySummary;
+import uk.ac.lancs.aurorawatch.bean.ActivityTxtParser;
+import uk.ac.lancs.aurorawatch.bean.ViewableActivitySummary;
+import uk.ac.lancs.aurorawatch.exception.InvalidActivityTxtException;
 import uk.ac.lancs.aurorawatch.service.ActivityTxtService;
 
 /**
@@ -44,89 +41,43 @@ public class NowFragment extends Fragment {
 
     private Properties props;
 
-    private static String PROP_PREFIX = "now.";
-    private static String PROP_STATUS_SUMMARY = PROP_PREFIX + "status.summary.";
-    private static String PROP_STATUS_DETAIL = PROP_PREFIX + "status.detail.";
-    private static String PROP_STATUS_COLOR = PROP_PREFIX + "status.color.";
-    private static String PROP_STATION = PROP_PREFIX + "station.";
-
-
     private void loadProperties() {
         props = new Properties();
         try {
-            //load a properties file
-            Activity a = getActivity();
-            Context c = a.getBaseContext();
-            AssetManager am = c.getAssets();
-            am.open("messages.properties");
-
-            props.load(getActivity().getBaseContext().getAssets().open("messages.properties"));
+            props.load(getActivity().getBaseContext().getAssets().open("now.properties"));
 
         } catch (IOException e) {
-            Log.e(NowFragment.class.getSimpleName(), "Error reading messages.properties", e);
+            Log.e(NowFragment.class.getSimpleName(), "Error reading now.properties", e);
         }
-    }
-
-    private ActivitySummary readActivityTxt(String path) {
-        File cacheFile = new File(path);
-        if (!cacheFile.exists()) {
-            return null;
-        }
-        BufferedReader br = null;
-        ActivitySummary summary = null;
-        try {
-            br = new BufferedReader(new FileReader(cacheFile));
-            summary = ActivitySummary.parse(br);
-        } catch (IOException e) {
-            Log.e(NowFragment.class.getSimpleName(), "Error reading activity.txt", e);
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException ignore) {
-
-                }
-            }
-        }
-
-        return summary;
     }
 
     private void updateUI(String cacheFile) {
-        ActivitySummary summary = readActivityTxt(cacheFile);
-        if (summary == null || !summary.isValid()) {
-            Log.w(NowFragment.class.getSimpleName(), "Invalid activity.txt");
+
+        ActivitySummary summary;
+        try {
+            summary = ActivityTxtParser.getInstance().parse(cacheFile);
+
+        } catch (InvalidActivityTxtException e) {
+            Log.w(NowFragment.class.getSimpleName(), e.toString());
             return;
         }
+        ViewableActivitySummary vs = new ViewableActivitySummary(props, getResources(), summary);
 
-        String status = summary.getStatusText().toLowerCase();
-        if (!(Arrays.asList("green", "yellow", "amber", "red")).contains(status)) {
-            Log.w(NowFragment.class.getSimpleName(), "Unknown status " + status);
-            return;
-        }
-
-        // Use the status to select the right text and color
         // Coloured top bar
-        String statusSummary = props.getProperty(PROP_STATUS_SUMMARY + status);
-        String colorString = props.getProperty(PROP_STATUS_COLOR + status);
-        int color = (int)Long.parseLong(colorString, 16);
-        alertLevelSummary.setText(statusSummary);
-        ((View)alertLevelSummary.getParent()).setBackgroundColor(color);
+        alertLevelSummary.setText(vs.getAlertLevelSummary());
+        ((View)alertLevelSummary.getParent()).setBackgroundColor(vs.getColor());
 
         // Raw number
-        disturbanceLevelValue.setText(summary.getStatusNumber());
-        disturbanceLevelValue.setTextColor(color);
-        disturbanceLevelUnit.setTextColor(color);
+        disturbanceLevelValue.setText(vs.getDisturbanceLevelValue());
+        disturbanceLevelValue.setTextColor(vs.getColor());
+        disturbanceLevelUnit.setText(vs.getDisturbanceLevelUnit());
+        disturbanceLevelUnit.setTextColor(vs.getColor());
 
         // Detail message "Aurora is likely to be visible from..."
-        String statusDetail = props.getProperty(PROP_STATUS_DETAIL + status);
-        alertLevelDetail.setText(statusDetail);
+        alertLevelDetail.setText(vs.getAlertLevelDetail());
 
         // Station and timestamp
-        Resources res = getResources();
-        String station = props.getProperty(PROP_STATION + summary.getStation(), summary.getStation());
-        retrievalTime.setText(String.format(res.getString(R.string.retrievalTime),
-                station, summary.getCreationTime()));
+       retrievalTime.setText(vs.getRetrievalInfo());
     }
 
     @Override

@@ -14,6 +14,7 @@
     <string name="alertLevelSummary">Amber alert: possible aurora</string>
     <string name="alertLevelDetail">Aurora is likely to be visible from Scotland, northern England and Northern Ireland</string>
     <string name="disturbanceLevelLabel">Disturbance level</string>
+    <string name="disturbanceLevelUnknown">unknown</string>
     <string name="disturbanceLevelUnit">nT</string>
     <string name="retrievalTime">Recorded:\n%1$s\n%2$s</string>
     <string name="awUrlButton">AuroraWatch UK Website</string>
