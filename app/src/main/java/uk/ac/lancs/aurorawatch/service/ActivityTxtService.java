@@ -7,7 +7,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * An {@link IntentService} subclass for loading the activity.txt from
