@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.os.Handler;
 
@@ -24,6 +25,7 @@ public class Past24HrFragment extends Fragment {
 
     ImageView image;
     String savedFile;
+    Boolean shown = false;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -33,6 +35,20 @@ public class Past24HrFragment extends Fragment {
         if (view != null) {
             image = (ImageView) getActivity().findViewById(R.id.imgPast24Hrs);
             savedFile = getActivity().getFilesDir() + "/24hr.png";
+
+            this.getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (!shown) {
+                        shown = true;
+                        //show a cached image, if present
+                        refreshImage();
+
+                        //request we refresh the image
+                        DownloadImage();
+                    }
+                }
+            });
 
             //register event
             EventManager.registerEventListener(new GenericEventListener() {
@@ -46,8 +62,6 @@ public class Past24HrFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //refresh the image
-        DownloadImage();
     }
 
     @Override
