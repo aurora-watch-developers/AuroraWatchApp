@@ -1,22 +1,26 @@
 package uk.ac.lancs.aurorawatch.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.os.Handler;
 
-import javaEventing.EventManager;
-import javaEventing.interfaces.Event;
-import javaEventing.interfaces.GenericEventListener;
-import uk.ac.lancs.aurorawatch.ImageFunctions;
+import java.io.File;
+
 import uk.ac.lancs.aurorawatch.R;
+import uk.ac.lancs.aurorawatch.service.HttpUtil;
+import uk.ac.lancs.aurorawatch.service.Past24HrService;
 
 /**
  * Fragment showing the past 24 hours
@@ -26,6 +30,9 @@ public class Past24HrFragment extends Fragment {
     ImageView image;
     String savedFile;
     Boolean shown = false;
+    private BroadcastReceiver receiver;
+    private String cacheFile;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -34,28 +41,16 @@ public class Past24HrFragment extends Fragment {
         View view = getView();
         if (view != null) {
             image = (ImageView) getActivity().findViewById(R.id.imgPast24Hrs);
-            savedFile = getActivity().getFilesDir() + "/24hr.png";
-
             this.getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     if (!shown) {
                         shown = true;
                         //show a cached image, if present
-                        refreshImage();
-
-                        //request we refresh the image
-                        DownloadImage();
+                        updateUI(cacheFile);
                     }
                 }
             });
-
-            //register event
-            EventManager.registerEventListener(new GenericEventListener() {
-                public void eventTriggered(Object sender, Event event) {
-                    refreshImage();
-                }
-            }, ImageFunctions.ImageDownloadEvent.class);
         }
     }
 
@@ -67,6 +62,21 @@ public class Past24HrFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateUI(intent.getStringExtra(Past24HrService.CACHE_FILE));
+            }
+        };
+
+        File cacheDir = getActivity().getCacheDir();
+        cacheFile = new File(cacheDir, "24hr.png").getAbsolutePath();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+                receiver,
+                new IntentFilter(Past24HrService.FETCH_24HR_IMAGE));
+
+        Past24HrService.startFetch24HrImage(getActivity(), cacheFile);
     }
 
     @Override
@@ -79,6 +89,7 @@ public class Past24HrFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
         super.onDestroy();
     }
 
@@ -86,16 +97,9 @@ public class Past24HrFragment extends Fragment {
         return new Past24HrFragment();
     }
 
-    private void DownloadImage() {
-        String url = "http://aurorawatch.lancs.ac.uk/summary/aurorawatch_new/plots/awn_lan1/rolling.png";
-        ImageFunctions imageFunctions = new ImageFunctions();
-        imageFunctions.downloadImageToFile(url, savedFile);
-    }
-
-    private void refreshImage() {
-
+    private void updateUI(String cacheFile) {
         try{
-            final Bitmap bmp = BitmapFactory.decodeFile(savedFile);
+            final Bitmap bmp = BitmapFactory.decodeFile(cacheFile);
             if (bmp != null)
                 image.setImageBitmap(bmp);
         }
