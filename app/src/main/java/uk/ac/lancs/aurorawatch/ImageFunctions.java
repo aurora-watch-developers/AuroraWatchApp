@@ -14,9 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import javaEventing.EventManager;
-import javaEventing.EventObject;
-
 /**
  * Created by jamesb on 11/02/2015.
  */
@@ -39,61 +36,4 @@ public class ImageFunctions {
 
         return resizedBitmap;
     }
-
-    public void downloadImageToFile(final String imageurl, final String filename) {
-
-        final Handler uiUpdater = new Handler();
-        Thread th = new Thread(new Runnable() {
-            public void run() {
-                InputStream in = null;
-
-                try {
-                    Log.i("URL", imageurl);
-                    URL url = new URL(imageurl);
-                    URLConnection urlConn = url.openConnection();
-
-                    HttpURLConnection httpConn = (HttpURLConnection) urlConn;
-
-                    httpConn.connect();
-
-                    in = httpConn.getInputStream();
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Bitmap bmp = BitmapFactory.decodeStream(in);
-
-                FileOutputStream out = null;
-                try {
-                    out = new FileOutputStream(filename);
-                    bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-                    //raise event here as we downloaded an image...
-                    uiUpdater.post(new Runnable(){
-                        @Override
-                        public void run()
-                        {
-                            EventManager.triggerEvent(this, new ImageDownloadEvent());
-                        }
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (out != null) {
-                            out.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        th.start();
-    }
-
-    public class ImageDownloadEvent extends EventObject {}
 }
