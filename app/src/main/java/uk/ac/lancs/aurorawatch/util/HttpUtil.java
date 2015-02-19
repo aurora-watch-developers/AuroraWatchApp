@@ -1,4 +1,4 @@
-package uk.ac.lancs.aurorawatch.service;
+package uk.ac.lancs.aurorawatch.util;
 
 import android.util.Log;
 
@@ -65,21 +65,9 @@ public class HttpUtil {
             return false;
 
         } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ignore) {
-                }
-            }
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException ignore) {
-                }
-            }
+            IOUtil.closeQuietly(conn);
+            IOUtil.closeQuietly(in);
+            IOUtil.closeQuietly(out);
         }
     }
 }

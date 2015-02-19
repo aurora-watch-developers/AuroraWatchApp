@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import uk.ac.lancs.aurorawatch.exception.InvalidActivityTxtException;
+import uk.ac.lancs.aurorawatch.util.IOUtil;
 
 /**
  * Parse the activity.txt file.
@@ -98,13 +99,7 @@ public class ActivityTxtParser {
         } catch (IOException e) {
             throw new InvalidActivityTxtException("Error opening activity.txt", e);
         } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException ignore) {
-
-                }
-            }
+            IOUtil.closeQuietly(br);
         }
 
         return summary;
