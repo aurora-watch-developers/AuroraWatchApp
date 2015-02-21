@@ -85,10 +85,10 @@ public class ActivityTxtParser {
         return summary;
     }
 
-    public ActivitySummary parse(String path) throws InvalidActivityTxtException{
+    public ActivitySummary parse(String path) throws InvalidActivityTxtException, FileNotFoundException{
         File cacheFile = new File(path);
         if (!cacheFile.exists()) {
-            throw new InvalidActivityTxtException("activity.txt not found", new FileNotFoundException());
+            throw new FileNotFoundException("activity.txt");
         }
 
         BufferedReader br = null;
