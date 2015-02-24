@@ -24,7 +24,9 @@
         <service
             android:name=".service.ActivityTxtService"
             android:exported="false" />
-
+        <service
+            android:name=".service.Past24HrService"
+            android:exported="false" />
         <receiver
             android:name=".AuroraWatchUKReceiver"
             android:enabled="true"
