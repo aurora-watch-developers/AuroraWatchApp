@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -128,6 +129,18 @@ public class NowFragment extends Fragment {
             Log.d(NowFragment.class.getSimpleName(), "Showing older activity.txt for now");
         } else {
             showView(createView(R.layout.network_error));
+            View view = getView();
+            if (view != null) {
+                View settingsButton = getView().findViewById(R.id.btnOpenSettings);
+                if (settingsButton != null) {
+                    settingsButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -149,6 +162,20 @@ public class NowFragment extends Fragment {
             Log.d(NowFragment.class.getSimpleName(), "Showing older activity.txt for now");
         } else {
             showView(createView(R.layout.format_error));
+            View view = getView();
+            if (view != null) {
+                View settingsButton = getView().findViewById(R.id.btnCheckForUpdates);
+                if (settingsButton != null) {
+                    settingsButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(getString(R.string.marketURL)));
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
         }
 
     }
