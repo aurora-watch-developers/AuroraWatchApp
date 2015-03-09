@@ -8,6 +8,8 @@ import android.util.Log;
 
 import java.io.File;
 
+import uk.ac.lancs.aurorawatch.util.HttpUtil;
+
 /**
  * An {@link IntentService} subclass for loading the image of the last 24 hrs activity from
  * AuroraWatch UK.

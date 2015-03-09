@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import java.io.File;
 
 import uk.ac.lancs.aurorawatch.R;
-import uk.ac.lancs.aurorawatch.service.HttpUtil;
+import uk.ac.lancs.aurorawatch.util.HttpUtil;
 import uk.ac.lancs.aurorawatch.service.Past24HrService;
 
 /**
