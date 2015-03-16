@@ -81,17 +81,18 @@ public class ActivityTxtService extends IntentService {
         String path = intent.getStringExtra(CACHE_FILE);
         if (FileUtil.existsAndIsUpToDate(path, MIN_DOWNLOAD_INTERVAL_SEC)) {
             Log.d(ActivityTxtService.class.getSimpleName(), "Cache exists");
-            return;
         }
+        else {
 
-        try {
-            HttpUtil.downloadFile(ACTIVITY_TXT_URL, path);
-        } catch (Exception e) {
-            intent.putExtra(ERROR_INFO, e.toString());
-        }
+            try {
+                HttpUtil.downloadFile(ACTIVITY_TXT_URL, path);
+            } catch (Exception e) {
+                intent.putExtra(ERROR_INFO, e.toString());
+            }
 
-        if (!FileUtil.existsAndIsUpToDate(path, MIN_DOWNLOAD_INTERVAL_SEC)) {
-            intent.putExtra(FILE_NOT_FOUND, true);
+            if (!FileUtil.existsAndIsUpToDate(path, MIN_DOWNLOAD_INTERVAL_SEC)) {
+                intent.putExtra(FILE_NOT_FOUND, true);
+            }
         }
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
