@@ -47,10 +47,9 @@ public class ViewableActivitySummary {
     }
 
     public Integer getColor() {
-        String colorString = null;
         if (color == null) {
             String PROP_STATUS_COLOR = "status.color.";
-            colorString = props.getProperty(PROP_STATUS_COLOR + raw.getStatusText());
+            String colorString = props.getProperty(PROP_STATUS_COLOR + raw.getStatusText());
             try {
                 color = (int) Long.parseLong(colorString, 16);
             } catch (NumberFormatException e) {

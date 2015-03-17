@@ -17,6 +17,13 @@
     <string name="disturbanceLevelUnknown">unknown</string>
     <string name="disturbanceLevelUnit">nT</string>
     <string name="retrievalTime">Recorded:\n%1$s\n%2$s</string>
+    <string name="networkErrorTitle">Network error</string>
+    <string name="networkError">Sorry, we were unable to connect to Aurora Watch UK. Please check your network settings.</string>
+    <string name="networkErrorSettings">Settings</string>
+    <string name="formatErrorTitle">Unrecognised format</string>
+    <string name="formatError">Sorry, the latest information from Aurora Watch UK is not in a recognised format. If this error persists, please update the app to the latest version.</string>
+    <string name="formatErrorCheckForUpdates">Check for updates</string>
+    <string name="marketURL">market://details?id=uk.ac.lancs.aurorawatch</string>
     <string name="awUrlButton">AuroraWatch UK Website</string>
     <string name="faq">FAQs</string>
     <string name="awTwitter">AuroraWatch UK on Twitter</string>
@@ -28,7 +35,7 @@
     <string name="alertMinor">Minor</string>
     <string name="alertAmber">Amber</string>
     <string name="alertRed">Red</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">AuroraWatch UK</string>
     <string name="title_section1">Right Now</string>
     <string name="title_section2">More…</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
