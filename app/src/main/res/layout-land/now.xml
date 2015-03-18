@@ -23,9 +23,10 @@
                 android:textStyle="bold"
                 android:id="@+id/alertLevelSummary"
                 android:textColor="#1f0a00"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
+                android:layout_height="fill_parent"
+                android:gravity="center" />
 
         </LinearLayout>
 
