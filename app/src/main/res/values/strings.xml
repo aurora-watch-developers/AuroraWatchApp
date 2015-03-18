@@ -29,7 +29,7 @@
     <string name="awTwitter">AuroraWatch UK on Twitter</string>
     <string name="awFacebook">AuroraWatch UK on Facebook</string>
     <string name="awFlickr">AuroraWatch UK on Flickr</string>
-    <string name="notifications">Notifications</string>
+    <string name="notifications">Notification min. level</string>
     <string name="minalertlabel">Minimum alert level</string>
     <string name="alertNone">None</string>
     <string name="alertMinor">Minor</string>
