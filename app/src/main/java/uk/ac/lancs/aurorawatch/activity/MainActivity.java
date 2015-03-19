@@ -19,7 +19,6 @@ import uk.ac.lancs.aurorawatch.fragment.MoreFragment;
 import uk.ac.lancs.aurorawatch.fragment.NavigationDrawerFragment;
 import uk.ac.lancs.aurorawatch.fragment.NowFragment;
 import uk.ac.lancs.aurorawatch.fragment.Past24HrFragment;
-import uk.ac.lancs.aurorawatch.service.Past24HrService;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
