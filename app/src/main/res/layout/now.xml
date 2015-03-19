@@ -8,8 +8,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="13"
-        android:gravity="center_vertical">
+        android:layout_weight="10"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="100dp">
 
         <TextView
             style="@style/AWTextView"
@@ -25,14 +26,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="36">
+        android:layout_weight="40">
 
         <TextView
             style="@style/AWTextView"
             android:text="@string/disturbanceLevelLabel"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp" />
+            android:layout_gravity="center_horizontal"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -74,7 +73,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="26">
+        android:layout_weight="25">
 
         <TextView
             style="@style/AWTextView"
