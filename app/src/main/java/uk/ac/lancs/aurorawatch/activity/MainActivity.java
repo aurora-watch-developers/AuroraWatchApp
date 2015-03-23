@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import uk.ac.lancs.aurorawatch.R;
+import uk.ac.lancs.aurorawatch.fragment.AboutFragment;
 import uk.ac.lancs.aurorawatch.fragment.MoreFragment;
 import uk.ac.lancs.aurorawatch.fragment.NavigationDrawerFragment;
 import uk.ac.lancs.aurorawatch.fragment.NowFragment;
@@ -61,15 +62,21 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 1:
                 fragmentManager.beginTransaction()
+                        .replace(R.id.container, Past24HrFragment.newInstance())
+                        .commit();
+                mTitle = "Past 24 Hours";
+                break;
+            case 2:
+                fragmentManager.beginTransaction()
                         .replace(R.id.container, MoreFragment.newInstance())
                         .commit();
                 mTitle = "More";
                 break;
-            case 2:
+            case 3:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, Past24HrFragment.newInstance())
+                        .replace(R.id.container, AboutFragment.newInstance())
                         .commit();
-                mTitle = "Past 24 Hours";
+                mTitle = "About";
                 break;
             default:
                 throw new IllegalArgumentException("invalid menu index");

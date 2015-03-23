@@ -37,7 +37,9 @@
     <string name="alertRed">Red</string>
     <string name="title_activity_main">AuroraWatch UK</string>
     <string name="title_section1">Right Now</string>
-    <string name="title_section2">More…</string>
+    <string name="title_section2">Past 24 Hours</string>
+    <string name="title_section3">More</string>
+    <string name="title_section4">About</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
