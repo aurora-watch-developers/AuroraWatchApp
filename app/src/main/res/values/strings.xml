@@ -42,4 +42,10 @@
     <string name="title_section4">About</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="licensing_header">Software License</string>
+    <string name="licensing_info">AuroraWatch UK alerts data is provided by Lancaster University, UK using data from the SAMNET and/or AuroraWatchNet magnetometer networks.</string>
+    <string name="url_aurorawatch">"<a href="http://aurorawatch.lancs.ac.uk">AuroraWatch UK</a>"</string>
+    <string name="url_lancaster">"<a href="http://www.lancaster.ac.uk">Lancaster University</a>"</string>
+    <string name="url_samnet">"<a href="http://spears.lancs.ac.uk/samnet/">SAMNET</a>"</string>
+    <string name="url_aurorawatchnet">"<a href="http://aurorawatch.net/">AuroraWatchNet</a>"</string>
 </resources>

@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 import uk.ac.lancs.aurorawatch.AlertLevel;
 import uk.ac.lancs.aurorawatch.ImageFunctions;
 import uk.ac.lancs.aurorawatch.R;
+import uk.ac.lancs.aurorawatch.util.HttpUtil;
 
 /**
  * Created by jamesb on 04/02/2015.
@@ -64,25 +65,25 @@ public class MoreFragment extends Fragment {
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl("https://twitter.com/aurorawatchuk");
+                HttpUtil.openUrl("https://twitter.com/aurorawatchuk", getActivity());
             }
         });
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl("https://www.facebook.com/aurorawatchuk");
+                HttpUtil.openUrl("https://www.facebook.com/aurorawatchuk", getActivity());
             }
         });
         flickrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl("http://www.flickr.com/groups/aurorawatch");
+                HttpUtil.openUrl("http://www.flickr.com/groups/aurorawatch", getActivity());
             }
         });
         websiteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl("http://aurorawatch.lancs.ac.uk/");
+                HttpUtil.openUrl("http://aurorawatch.lancs.ac.uk/",getActivity());
             }
         });
 
@@ -146,15 +147,6 @@ public class MoreFragment extends Fragment {
         resizeButtonImage(flickrButton);
         resizeButtonImage(faqButton);
         resizeButtonImage(websiteButton);
-    }
-
-
-    private void openUrl(String url) {
-        Uri destination = Uri.parse(url);
-        Intent intent = new Intent(Intent.ACTION_VIEW, destination);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivity(intent);
-        }
     }
 
     private void resizeButtonImage(Button button)

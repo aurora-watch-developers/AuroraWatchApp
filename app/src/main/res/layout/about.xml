@@ -6,53 +6,66 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="33"
-        android:gravity="center_vertical">
+        android:focusableInTouchMode="false"
+        android:weightSum="50"
+        android:layout_weight="50">
 
         <TextView
-            style="@style/AWTextView"
-            android:textStyle="bold"
-            android:id="@+id/alertLevelSummary"
-            android:textColor="#1f0a00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/licensing_header"
+            android:id="@+id/txtLicenseHeader"
             android:layout_gravity="center_horizontal"
-            />
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/licensing_info"
+            android:id="@+id/txtLicensingInfo"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/url_aurorawatch"
+            android:id="@+id/urlAuroraWatchUK"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/url_lancaster"
+            android:id="@+id/urlLancsUni"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/url_samnet"
+            android:id="@+id/urlSamnet"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/url_aurorawatchnet"
+            android:id="@+id/urlAuroraWatchNet"
+            android:layout_margin="10dp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="33"
-        android:gravity="center_vertical">
-
-        <TextView
-            style="@style/AWTextView"
-            android:textStyle="bold"
-            android:id="@+id/alertLevelSummary"
-            android:textColor="#1f0a00"
-            android:layout_gravity="center_horizontal"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="34"
-        android:gravity="center_vertical">
-
-        <TextView
-            style="@style/AWTextView"
-            android:textStyle="bold"
-            android:id="@+id/alertLevelSummary"
-            android:textColor="#1f0a00"
-            android:layout_gravity="center_horizontal"
-            />
-
-    </LinearLayout>
-
+        android:layout_weight="50"></LinearLayout>
 </LinearLayout>

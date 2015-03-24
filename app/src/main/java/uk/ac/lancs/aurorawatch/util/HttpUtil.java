@@ -1,5 +1,8 @@
 package uk.ac.lancs.aurorawatch.util;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -68,6 +71,15 @@ public class HttpUtil {
             IOUtil.closeQuietly(conn);
             IOUtil.closeQuietly(in);
             IOUtil.closeQuietly(out);
+        }
+    }
+
+
+    public static void openUrl(String url, final Context context) {
+        Uri destination = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, destination);
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(intent);
         }
     }
 }
