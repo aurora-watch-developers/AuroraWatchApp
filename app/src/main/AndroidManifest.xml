@@ -21,6 +21,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_settings"
+            android:parentActivityName=".activity.MainActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />>
+        </activity>
+
         <service
             android:name=".service.ActivityTxtService"
             android:exported="false" />

@@ -1,137 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="100">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="55">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/notifications"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
-
-        <Button
-            android:layout_width="72dp"
-            android:layout_height="wrap_content"
-            android:text="@string/alertNone"
-            android:id="@+id/btnAlertNone"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#ffffff00" />
-
-            <Button
-                android:layout_width="72dp"
-                android:layout_height="wrap_content"
-                android:text="@string/alertMinor"
-                android:id="@+id/btnAlertMinor" />
-
-            <Button
-                android:layout_width="72dp"
-                android:layout_height="wrap_content"
-                android:text="@string/alertAmber"
-                android:id="@+id/btnAlertAmber" />
-
-            <Button
-                android:layout_width="72dp"
-                android:layout_height="wrap_content"
-                android:text="@string/alertRed"
-                android:id="@+id/btnAlertRed" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="45"
-        android:gravity="center_vertical">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
+        android:text="@string/appName"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/appName"
-            android:id="@+id/appTitle"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="5dp" />
+    <Button
+        android:id="@+id/awUrlButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:drawableLeft="@drawable/aw"
+        android:maxHeight="17dp"
+        android:scaleType="fitCenter"
+        android:text="@string/awUrlButton" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/awUrlButton"
-            android:drawableLeft="@drawable/aw"
-            android:scaleType="fitCenter"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/awUrlButton"
-            android:maxHeight="17dp" />
+    <Button
+        android:id="@+id/faqButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:drawableLeft="@drawable/question"
+        android:maxHeight="17dp"
+        android:scaleType="fitCenter"
+        android:text="@string/faq" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/faqButton"
-            android:drawableLeft="@drawable/question"
-            android:scaleType="fitCenter"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/faq"
-            android:maxHeight="17dp" />
+    <Button
+        android:id="@+id/twitterButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:drawableLeft="@drawable/twitter"
+        android:maxHeight="17dp"
+        android:scaleType="fitCenter"
+        android:text="@string/awTwitter" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/twitterButton"
-            android:drawableLeft="@drawable/twitter"
-            android:scaleType="fitCenter"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/awTwitter"
-            android:maxHeight="17dp" />
+    <Button
+        android:id="@+id/facebookButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:drawableLeft="@drawable/facebook"
+        android:maxHeight="17dp"
+        android:scaleType="fitCenter"
+        android:text="@string/awFacebook" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/facebookButton"
-            android:drawableLeft="@drawable/facebook"
-            android:scaleType="fitCenter"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/awFacebook"
-            android:maxHeight="17dp" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/flickrButton"
-            android:layout_gravity="center_horizontal"
-            android:drawableLeft="@drawable/flickr"
-            android:scaleType="fitCenter"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/awFlickr"
-            android:maxHeight="17dp" />
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/flickrButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:drawableLeft="@drawable/flickr"
+        android:maxHeight="17dp"
+        android:scaleType="fitCenter"
+        android:text="@string/awFlickr" />
 
 </LinearLayout>
