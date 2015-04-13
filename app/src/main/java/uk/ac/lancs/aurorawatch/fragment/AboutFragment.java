@@ -33,6 +33,7 @@ public class AboutFragment extends Fragment {
     TextView txtUrlLancaster;
     TextView txtUrlSamnet;
     TextView txtUrlAuroraNet;
+    TextView txtUrlSupport;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -43,11 +44,13 @@ public class AboutFragment extends Fragment {
         txtUrlLancaster = (TextView)view.findViewById(R.id.urlLancsUni);
         txtUrlSamnet = (TextView)view.findViewById(R.id.urlSamnet);
         txtUrlAuroraNet = (TextView)view.findViewById(R.id.urlAuroraWatchNet);
+        txtUrlSupport = (TextView)view.findViewById(R.id.urlSupport);
 
         txtUrlAuroraWatch.setMovementMethod(LinkMovementMethod.getInstance());
         txtUrlLancaster.setMovementMethod(LinkMovementMethod.getInstance());
         txtUrlSamnet.setMovementMethod(LinkMovementMethod.getInstance());
         txtUrlAuroraNet.setMovementMethod(LinkMovementMethod.getInstance());
+        txtUrlSupport.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
