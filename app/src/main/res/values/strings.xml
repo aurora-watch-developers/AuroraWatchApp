@@ -49,4 +49,5 @@
     <string name="url_lancaster">"<a href="http://www.lancaster.ac.uk">Lancaster University</a>"</string>
     <string name="url_samnet">"<a href="http://spears.lancs.ac.uk/samnet/">SAMNET</a>"</string>
     <string name="url_aurorawatchnet">"<a href="http://aurorawatch.net/">AuroraWatchNet</a>"</string>
+    <string name="url_support">"<a href="https://groups.google.com/forum/#!forum/aurorawatch-uk-android-app">AuroraWatch UK App Support</a>"</string>
 </resources>
