@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="18"
+        android:layout_margin="0dp">
+
+        <TextView
+            style="@style/AWTextView"
+            android:textStyle="bold"
+            android:id="@+id/alertLevelSummary"
+            android:textColor="#1f0a00"
+            android:layout_gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:layout_margin="0dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="82"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="75"
+            android:weightSum="100">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="50">
+
+                <TextView
+                    style="@style/AWTextView"
+                    android:text="@string/disturbanceLevelLabel"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        style="@style/AWTextView"
+                        android:textSize="64sp"
+                        android:id="@+id/disturbanceLevelValue"
+                        android:layout_gravity="bottom"/>
+
+                    <TextView
+                        style="@style/AWTextView"
+                        android:id="@+id/disturbanceLevelUnit"
+                        android:text="@string/disturbanceLevelUnit"
+                        android:layout_gravity="bottom"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:layout_gravity="center">
+
+                <TextView
+                    style="@style/AWTextView"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/alertLevelDetail"
+                    android:id="@+id/alertLevelDetail" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="25">
+
+            <TextView
+                style="@style/AWTextView"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/retrievalTime"
+                android:id="@+id/retrievalTime" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
