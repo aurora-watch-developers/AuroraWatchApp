@@ -16,7 +16,7 @@
     <string name="disturbanceLevelLabel">Disturbance level</string>
     <string name="disturbanceLevelUnknown">unknown</string>
     <string name="disturbanceLevelUnit">nT</string>
-    <string name="retrievalTime">Recorded:\n%1$s\n%2$s</string>
+    <string name="retrievalTime">Recorded:%1$s%2$s</string>
     <string name="networkErrorTitle">Network error</string>
     <string name="networkError">Sorry, we were unable to connect to Aurora Watch UK. Please check your network settings.</string>
     <string name="networkErrorSettings">Settings</string>
