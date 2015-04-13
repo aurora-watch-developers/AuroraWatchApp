@@ -14,12 +14,14 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import uk.ac.lancs.aurorawatch.R;
+
 /**
  * HTTP utilities.
  */
 public class HttpUtil {
 
-    public static boolean downloadFile(String urlString, String path) {
+    public static boolean downloadFile(String urlString, String path, Context context) {
         HttpURLConnection conn = null;
         InputStream in = null;
         OutputStream out = null;
@@ -32,6 +34,8 @@ public class HttpUtil {
 
             Log.i(HttpUtil.class.getSimpleName(), "Fetching " + url.toString());
             conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("User-Agent", context.getResources().getString(R.string.appIdentifier));
+            Log.d(HttpUtil.class.getSimpleName(), "User agent set: " + conn.getRequestProperties().get("User-Agent").toString());
             conn.setRequestMethod("POST");
 
 

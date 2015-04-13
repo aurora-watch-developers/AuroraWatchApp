@@ -85,7 +85,7 @@ public class ActivityTxtService extends IntentService {
         else {
 
             try {
-                HttpUtil.downloadFile(ACTIVITY_TXT_URL, path);
+                HttpUtil.downloadFile(ACTIVITY_TXT_URL, path, getApplicationContext());
             } catch (Exception e) {
                 intent.putExtra(ERROR_INFO, e.toString());
             }

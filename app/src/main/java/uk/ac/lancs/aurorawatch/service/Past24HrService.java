@@ -65,7 +65,7 @@ public class Past24HrService extends IntentService {
             return;
         }
 
-        HttpUtil.downloadFile(PAST24HR_IMG_URL, cacheFile.getAbsolutePath());
+        HttpUtil.downloadFile(PAST24HR_IMG_URL, cacheFile.getAbsolutePath(), getApplicationContext());
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

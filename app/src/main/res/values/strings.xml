@@ -2,6 +2,7 @@
 <resources>
 
     <string name="appName">AuroraWatch UK</string>
+    <string name="appIdentifier">aurora-watch-developers/AuroraWatchApp</string>
     <string name="preferences">Preferences</string>
     <string name="about">About</string>
     <string name="aboutMessage">Get notifications when aurora may be visible in the UK, using information provided by AuroraWatch UK. Android app written by Steve Marple.</string>
