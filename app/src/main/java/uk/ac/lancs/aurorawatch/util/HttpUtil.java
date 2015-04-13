@@ -34,7 +34,8 @@ public class HttpUtil {
 
             Log.i(HttpUtil.class.getSimpleName(), "Fetching " + url.toString());
             conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("User-Agent", context.getResources().getString(R.string.appName));
+            conn.setRequestProperty("User-Agent", context.getResources().getString(R.string.appIdentifier));
+            Log.d(HttpUtil.class.getSimpleName(), "User agent set: " + conn.getRequestProperties().get("User-Agent").toString());
             conn.setRequestMethod("POST");
 
 
