@@ -3,7 +3,7 @@
     android:layout_height="65dp"
     android:layout_width="wrap_content"
     android:id="@+id/facebookButtonLayout"
-    style="@android:style/Widget.Button"
+    style="@style/ButtonStyle"
     android:gravity="left">
 
     <ImageView

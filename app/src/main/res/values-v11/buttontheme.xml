@@ -1,0 +1,5 @@
+<resources>
+    <style name="ButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:buttonStyle">@android:style/Widget.Holo.Button</item>
+    </style>
+</resources>

@@ -1,0 +1,5 @@
+<resources>
+    <style name="ButtonStyle" parent="android:Widget.Button">
+        <item name="android:buttonStyle">@android:style/Widget.Button</item>
+    </style>
+</resources>
