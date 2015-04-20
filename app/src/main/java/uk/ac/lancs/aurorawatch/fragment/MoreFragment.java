@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import uk.ac.lancs.aurorawatch.ImageFunctions;
 import uk.ac.lancs.aurorawatch.R;
@@ -22,11 +24,11 @@ import uk.ac.lancs.aurorawatch.util.HttpUtil;
  */
 public class MoreFragment extends Fragment {
 
-    Button twitterButton;
-    Button facebookButton;
-    Button flickrButton;
-    Button faqButton;
-    Button websiteButton;
+    RelativeLayout twitterButton;
+    RelativeLayout facebookButton;
+    RelativeLayout flickrButton;
+    RelativeLayout faqButton;
+    RelativeLayout websiteButton;
 
     Boolean mMeasured = false;
 
@@ -44,11 +46,11 @@ public class MoreFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        twitterButton = (Button)getView().findViewById(R.id.twitterButton);
-        facebookButton = (Button)getView().findViewById(R.id.facebookButton);
-        flickrButton = (Button)getView().findViewById(R.id.flickrButton);
-        faqButton = (Button)getView().findViewById(R.id.faqButton);
-        websiteButton = (Button)getView().findViewById(R.id.awUrlButton);
+        twitterButton = (RelativeLayout)getView().findViewById(R.id.twitterButton);
+        facebookButton = (RelativeLayout)getView().findViewById(R.id.facebookButton);
+        flickrButton = (RelativeLayout)getView().findViewById(R.id.flickrButton);
+        faqButton = (RelativeLayout)getView().findViewById(R.id.faqButton);
+        websiteButton = (RelativeLayout)getView().findViewById(R.id.awUrlButton);
 
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,35 +73,9 @@ public class MoreFragment extends Fragment {
         websiteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HttpUtil.openUrl("http://aurorawatch.lancs.ac.uk/",getActivity());
+                HttpUtil.openUrl("http://aurorawatch.lancs.ac.uk/", getActivity());
             }
         });
-
-        this.getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (!mMeasured) {
-                    mMeasured = true;
-                    resizeButtonIcons();
-                }
-            }
-        });
-    }
-
-    public void resizeButtonIcons() {
-        resizeButtonImage(twitterButton);
-        resizeButtonImage(facebookButton);
-        resizeButtonImage(flickrButton);
-        resizeButtonImage(faqButton);
-        resizeButtonImage(websiteButton);
-    }
-
-    private void resizeButtonImage(Button button)
-    {
-        Drawable[] buttonDrawables = button.getCompoundDrawables();
-        Bitmap currentImage = ((BitmapDrawable)(buttonDrawables[0])).getBitmap();
-        Bitmap resizedImage = ImageFunctions.getResizedBitmap(currentImage, button.getHeight());
-        button.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(resizedImage),null,null,null);
     }
 
     public static MoreFragment newInstance() {
