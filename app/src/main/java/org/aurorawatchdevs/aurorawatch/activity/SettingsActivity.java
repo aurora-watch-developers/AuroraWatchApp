@@ -50,6 +50,9 @@ public class SettingsActivity extends ActionBarActivity {
     public void saveAlertLevel()
     {
         try {
+            //Post alert setting to the cloud...
+            SaveAlertSetting(alertLevel);
+
             SharedPreferences settings = getSharedPreferences(appName, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("alertLevel", alertLevel.ordinal());
@@ -127,5 +130,10 @@ public class SettingsActivity extends ActionBarActivity {
                 Log.d("tag", Integer.toHexString(item.getItemId()));
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void SaveAlertSetting(AlertLevel alertLevel)
+    {
+
     }
 }
