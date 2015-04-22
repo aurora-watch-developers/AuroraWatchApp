@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="uk.ac.lancs.aurorawatch" >
+    package="org.aurorawatchdevs.aurorawatch" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -12,7 +12,7 @@
         android:label="@string/appName"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.MainActivity"
+            android:name="org.aurorawatchdevs.aurorawatch.activity.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,30 +22,30 @@
         </activity>
 
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name="org.aurorawatchdevs.aurorawatch.activity.SettingsActivity"
             android:label="@string/title_settings"
-            android:parentActivityName=".activity.MainActivity" >
+            android:parentActivityName="org.aurorawatchdevs.aurorawatch.activity.MainActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />>
+                android:value="org.aurorawatchdevs.aurorawatch.activity.MainActivity" />>
         </activity>
 
         <service
-            android:name=".service.ActivityTxtService"
+            android:name="org.aurorawatchdevs.aurorawatch.service.ActivityTxtService"
             android:exported="false" />
         <service
-            android:name=".service.Past24HrService"
+            android:name="org.aurorawatchdevs.aurorawatch.service.Past24HrService"
             android:exported="false" />
         <receiver
-            android:name=".AuroraWatchUKReceiver"
+            android:name="org.aurorawatchdevs.aurorawatch.AuroraWatchUKReceiver"
             android:enabled="true"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="uk.ac.lancs.aurorawatch.ALARM" />
+                <action android:name="org.aurorawatchdevs.aurorawatch.ALARM" />
             </intent-filter>
         </receiver>
 
