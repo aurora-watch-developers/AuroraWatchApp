@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -14,10 +15,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
 
 import org.aurorawatchdevs.aurorawatch.AlertLevel;
 import org.aurorawatchdevs.aurorawatch.R;
+import org.aurorawatchdevs.aurorawatch.util.GetUsernameTask;
+
+import java.io.IOException;
 
 /**
  * Activity for application settings, including alert level.
@@ -32,29 +39,24 @@ public class SettingsActivity extends ActionBarActivity {
     private String appName;
     private AlertLevel alertLevel;
 
-    private void setAlertButton()
-    {
-        alertNone.setTextColor(alertLevel == AlertLevel.none ?  Color.YELLOW : Color.WHITE);
-        alertMin.setTextColor(alertLevel == AlertLevel.minor ?  Color.YELLOW : Color.WHITE);
-        alertAmber.setTextColor(alertLevel == AlertLevel.amber ?  Color.YELLOW : Color.WHITE);
-        alertRed.setTextColor(alertLevel == AlertLevel.red ?  Color.YELLOW : Color.WHITE);
+    private void setAlertButton() {
+        alertNone.setTextColor(alertLevel == AlertLevel.none ? Color.YELLOW : Color.WHITE);
+        alertMin.setTextColor(alertLevel == AlertLevel.minor ? Color.YELLOW : Color.WHITE);
+        alertAmber.setTextColor(alertLevel == AlertLevel.amber ? Color.YELLOW : Color.WHITE);
+        alertRed.setTextColor(alertLevel == AlertLevel.red ? Color.YELLOW : Color.WHITE);
     }
 
-    public void loadAlertLevel()
-    {
+    public void loadAlertLevel() {
         try {
             SharedPreferences settings = getSharedPreferences(appName, 0);
             alertLevel = AlertLevel.values()[settings.getInt("alertLevel", 0)];
             setAlertButton();
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Log.e(appName, "Loading prefs: " + ex.getMessage());
         }
     }
 
-    public void saveAlertLevel()
-    {
+    public void saveAlertLevel() {
         try {
             //Post alert setting to the cloud...
             SaveAlertSetting(alertLevel);
@@ -63,10 +65,8 @@ public class SettingsActivity extends ActionBarActivity {
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("alertLevel", alertLevel.ordinal());
             editor.apply();
-        }
-        catch (Exception ex)
-        {
-            Log.e(appName,"Saving prefs: " + ex.getMessage());
+        } catch (Exception ex) {
+            Log.e(appName, "Saving prefs: " + ex.getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ public class SettingsActivity extends ActionBarActivity {
 
         loadAlertLevel();
 
-        alertNone.setOnClickListener(new View.OnClickListener(){
+        alertNone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.none;
@@ -101,7 +101,7 @@ public class SettingsActivity extends ActionBarActivity {
             }
         });
 
-        alertAmber.setOnClickListener(new View.OnClickListener(){
+        alertAmber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.amber;
@@ -109,7 +109,7 @@ public class SettingsActivity extends ActionBarActivity {
             }
         });
 
-        alertRed.setOnClickListener(new View.OnClickListener(){
+        alertRed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.red;
@@ -119,8 +119,7 @@ public class SettingsActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
         saveAlertLevel();
     }
@@ -138,12 +137,9 @@ public class SettingsActivity extends ActionBarActivity {
         }
     }
 
-    private void SaveAlertSetting(AlertLevel alertLevel)
-    {
+    private void SaveAlertSetting(AlertLevel alertLevel) {
         pickUserAccount(this);
     }
-
-
 
     static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
     String mEmail; // Received from newChooseAccountIntent(); passed to getToken()
@@ -170,5 +166,29 @@ public class SettingsActivity extends ActionBarActivity {
             }
         }
         // Later, more code will go here to handle the result from some exceptions...
+    }
+
+    private static final String SCOPE =
+            "oauth2:https://www.googleapis.com/auth/userinfo.profile";
+
+    /**
+     * Attempts to retrieve the username.
+     * If the account is not yet known, invoke the picker. Once the account is known,
+     * start an instance of the AsyncTask to get the auth token and do work with it.
+     */
+    private void getUsername() {
+        if (mEmail == null) {
+            pickUserAccount(this);
+        } else {
+            if (isDeviceOnline()) {
+                new GetUsernameTask(this, mEmail, SCOPE).execute();
+            } else {
+                Toast.makeText(this, R.string.not_online, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private boolean isDeviceOnline() {
+        return true; //TODO implement this!
     }
 }
