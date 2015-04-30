@@ -1,5 +1,8 @@
 package org.aurorawatchdevs.aurorawatch.activity;
 
+import android.accounts.AccountManager;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +12,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.common.AccountPicker;
 
 import org.aurorawatchdevs.aurorawatch.AlertLevel;
 import org.aurorawatchdevs.aurorawatch.R;
@@ -134,6 +140,35 @@ public class SettingsActivity extends ActionBarActivity {
 
     private void SaveAlertSetting(AlertLevel alertLevel)
     {
+        pickUserAccount(this);
+    }
 
+
+
+    static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
+    String mEmail; // Received from newChooseAccountIntent(); passed to getToken()
+
+    public void pickUserAccount(Activity activity) {
+        String[] accountTypes = new String[]{"com.google"};
+        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+                accountTypes, false, null, null, null, null);
+        activity.startActivityForResult(intent, REQUEST_CODE_PICK_ACCOUNT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PICK_ACCOUNT) {
+            // Receiving a result from the AccountPicker
+            if (resultCode == 0) {
+                mEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                // With the account name acquired, go get the auth token
+                //TODO//getUsername();
+            } else if (resultCode == 1) {
+                // The account picker dialog closed without selecting an account.
+                // Notify users that they must pick an account to proceed.
+                Toast.makeText(this, R.string.pick_account, Toast.LENGTH_SHORT).show();
+            }
+        }
+        // Later, more code will go here to handle the result from some exceptions...
     }
 }
