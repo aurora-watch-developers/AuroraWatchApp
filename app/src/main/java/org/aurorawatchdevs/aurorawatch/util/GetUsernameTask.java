@@ -28,7 +28,22 @@ public class GetUsernameTask extends AsyncTask<Void,Void,Void>  {
         this.mActivity = activity;
         this.mScope = scope;
         this.mEmail = name;
-        this.mAlertLevel = alertLevel.toUpperCase();
+        this.mAlertLevel = alertLevel;
+    }
+
+    private String ConvertedAlertLevel(String alertLevel)
+    {
+        switch (alertLevel)
+        {
+            case "minor":
+                return  "GREEN";
+            case "amber":
+                return "YELLOW";
+            case "red":
+                return "RED";
+            default:
+                return "NONE";
+        }
     }
 
     /**
@@ -44,8 +59,8 @@ public class GetUsernameTask extends AsyncTask<Void,Void,Void>  {
                 Log.i(getClass().getSimpleName(),"Got AuroraWatch Token " + token);
                 List<NameValuePair> httpParameters = new ArrayList<NameValuePair>();
                 httpParameters.add(new BasicNameValuePair("token", token));
-                httpParameters.add(new BasicNameValuePair("level", mAlertLevel));
-
+                httpParameters.add(new BasicNameValuePair("level", ConvertedAlertLevel(mAlertLevel)));
+                Log.i(getClass().getSimpleName(), "Making Post request for alert level " + ConvertedAlertLevel(mAlertLevel));
                 HttpUtil.postRequest("http://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
             }
         } catch (IOException e) {

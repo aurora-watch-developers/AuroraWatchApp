@@ -25,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import org.apache.http.util.EntityUtils;
 import org.aurorawatchdevs.aurorawatch.R;
 
 /**
@@ -103,6 +104,10 @@ public class HttpUtil {
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(params));
             HttpResponse response = httpClient.execute(httpPost);
+            Log.i(HttpUtil.class.getSimpleName(), "AuroraWatch alert request status: "
+                    + response.getStatusLine());
+            Log.i(HttpUtil.class.getSimpleName(), "AuroraWatch alert request response: "
+                    + EntityUtils.toString(response.getEntity()));
         }
         catch (UnsupportedEncodingException unsupportedEncodingException) {
             Log.e(HttpUtil.class.getSimpleName(), "UnsupportedEncodingException");
