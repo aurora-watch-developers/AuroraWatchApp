@@ -37,7 +37,6 @@ public class HttpUtil {
         InputStream in = null;
         OutputStream out = null;
 
-
         File file = new File(path);
         try {
 
@@ -98,20 +97,24 @@ public class HttpUtil {
         }
     }
 
-    public void postRequest(String url, List<NameValuePair> params) {
+    public static void postRequest(String url, List<NameValuePair> params) {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(params));
             HttpResponse response = httpClient.execute(httpPost);
-
-
         }
         catch (UnsupportedEncodingException unsupportedEncodingException) {
+            Log.e(HttpUtil.class.getSimpleName(), "UnsupportedEncodingException");
+            unsupportedEncodingException.printStackTrace();
         }
         catch (ClientProtocolException clientProtocolException){
+            Log.e(HttpUtil.class.getSimpleName(), "ClientProtocolException");
+            clientProtocolException.printStackTrace();
         }
         catch (IOException ioException){
+            Log.e(HttpUtil.class.getSimpleName(), "IOException");
+            ioException.printStackTrace();
         }
     }
 }

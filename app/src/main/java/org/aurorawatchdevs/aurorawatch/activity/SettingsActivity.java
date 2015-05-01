@@ -151,7 +151,7 @@ public class SettingsActivity extends ActionBarActivity {
         if (!checkUserAccount())
             return false;
 
-        new GetUsernameTask(this, accountName, SCOPE).execute();
+        new GetUsernameTask(this, accountName, SCOPE, alertLevel.name()).execute();
         return true;
     }
 

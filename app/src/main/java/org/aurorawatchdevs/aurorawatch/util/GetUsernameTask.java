@@ -1,16 +1,19 @@
 package org.aurorawatchdevs.aurorawatch.util;
 
-import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.aurorawatchdevs.aurorawatch.activity.SettingsActivity;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jamesb on 30/04/2015.
@@ -19,11 +22,13 @@ public class GetUsernameTask extends AsyncTask<Void,Void,Void>  {
     SettingsActivity mActivity;
     String mScope;
     String mEmail;
+    String mAlertLevel;
 
-    public GetUsernameTask(SettingsActivity activity, String name, String scope) {
+    public GetUsernameTask(SettingsActivity activity, String name, String scope, String alertLevel) {
         this.mActivity = activity;
         this.mScope = scope;
         this.mEmail = name;
+        this.mAlertLevel = alertLevel.toUpperCase();
     }
 
     /**
@@ -35,11 +40,17 @@ public class GetUsernameTask extends AsyncTask<Void,Void,Void>  {
         try {
             String token = fetchToken();
             if (token != null) {
-                // Insert the good stuff here.
-                // Use the token to access the user's Google data.
+                //try and post the setting...
+                Log.i(getClass().getSimpleName(),"Got AuroraWatch Token " + token);
+                List<NameValuePair> httpParameters = new ArrayList<NameValuePair>();
+                httpParameters.add(new BasicNameValuePair("token", token));
+                httpParameters.add(new BasicNameValuePair("level", mAlertLevel));
 
+                HttpUtil.postRequest("http://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
             }
         } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error in GetUsernameTask... ");
+            e.printStackTrace();
             // The fetchToken() method handles Google-specific exceptions,
             // so this indicates something went wrong at a higher level.
             // TIP: Check for network connectivity before starting the AsyncTask.
@@ -66,5 +77,4 @@ public class GetUsernameTask extends AsyncTask<Void,Void,Void>  {
         }
         return null;
     }
-    //...
 }
