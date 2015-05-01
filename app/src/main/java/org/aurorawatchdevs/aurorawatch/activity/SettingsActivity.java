@@ -1,11 +1,12 @@
 package org.aurorawatchdevs.aurorawatch.activity;
 
+import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -15,16 +16,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.aurorawatchdevs.aurorawatch.AlertLevel;
 import org.aurorawatchdevs.aurorawatch.R;
+import org.aurorawatchdevs.aurorawatch.util.AccountUtils;
 import org.aurorawatchdevs.aurorawatch.util.GetUsernameTask;
-
-import java.io.IOException;
 
 /**
  * Activity for application settings, including alert level.
@@ -38,6 +40,9 @@ public class SettingsActivity extends ActionBarActivity {
 
     private String appName;
     private AlertLevel alertLevel;
+    private AlertLevel lastAlertLevel;
+    private String accountName;
+    private Activity activity;
 
     private void setAlertButton() {
         alertNone.setTextColor(alertLevel == AlertLevel.none ? Color.YELLOW : Color.WHITE);
@@ -50,6 +55,7 @@ public class SettingsActivity extends ActionBarActivity {
         try {
             SharedPreferences settings = getSharedPreferences(appName, 0);
             alertLevel = AlertLevel.values()[settings.getInt("alertLevel", 0)];
+            lastAlertLevel = alertLevel;
             setAlertButton();
         } catch (Exception ex) {
             Log.e(appName, "Loading prefs: " + ex.getMessage());
@@ -59,12 +65,16 @@ public class SettingsActivity extends ActionBarActivity {
     public void saveAlertLevel() {
         try {
             //Post alert setting to the cloud...
-            SaveAlertSetting(alertLevel);
-
-            SharedPreferences settings = getSharedPreferences(appName, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt("alertLevel", alertLevel.ordinal());
-            editor.apply();
+            if (!SaveAlertSetting(alertLevel)) {
+                //if that failed, switch back
+                alertLevel = lastAlertLevel;
+            } else {
+                SharedPreferences settings = getSharedPreferences(appName, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putInt("alertLevel", alertLevel.ordinal());
+                editor.apply();
+            }
+            setAlertButton();
         } catch (Exception ex) {
             Log.e(appName, "Saving prefs: " + ex.getMessage());
         }
@@ -82,6 +92,7 @@ public class SettingsActivity extends ActionBarActivity {
         alertAmber = (Button) findViewById(R.id.btnAlertAmber);
         alertRed = (Button) findViewById(R.id.btnAlertRed);
         appName = getString(R.string.appName);
+        activity = this;
 
         loadAlertLevel();
 
@@ -89,7 +100,7 @@ public class SettingsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.none;
-                setAlertButton();
+                saveAlertLevel();
             }
         });
 
@@ -97,7 +108,7 @@ public class SettingsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.minor;
-                setAlertButton();
+                saveAlertLevel();
             }
         });
 
@@ -105,7 +116,7 @@ public class SettingsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.amber;
-                setAlertButton();
+                saveAlertLevel();
             }
         });
 
@@ -113,7 +124,7 @@ public class SettingsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 alertLevel = AlertLevel.red;
-                setAlertButton();
+                saveAlertLevel();
             }
         });
     }
@@ -121,7 +132,6 @@ public class SettingsActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         super.onPause();
-        saveAlertLevel();
     }
 
     @Override
@@ -137,55 +147,120 @@ public class SettingsActivity extends ActionBarActivity {
         }
     }
 
-    private void SaveAlertSetting(AlertLevel alertLevel) {
-        pickUserAccount(this);
+    private boolean SaveAlertSetting(AlertLevel alertLevel) {
+        if (!checkUserAccount())
+            return false;
+
+        new GetUsernameTask(this, accountName, SCOPE).execute();
+        return true;
     }
 
-    static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
-    String mEmail; // Received from newChooseAccountIntent(); passed to getToken()
+    static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001;
+    static final int REQUEST_CODE_PICK_ACCOUNT = 1002;
 
-    public void pickUserAccount(Activity activity) {
-        String[] accountTypes = new String[]{"com.google"};
-        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
-                accountTypes, false, null, null, null, null);
-        activity.startActivityForResult(intent, REQUEST_CODE_PICK_ACCOUNT);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_PICK_ACCOUNT) {
-            // Receiving a result from the AccountPicker
-            if (resultCode == 0) {
-                mEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-                // With the account name acquired, go get the auth token
-                //TODO//getUsername();
-            } else if (resultCode == 1) {
-                // The account picker dialog closed without selecting an account.
-                // Notify users that they must pick an account to proceed.
-                Toast.makeText(this, R.string.pick_account, Toast.LENGTH_SHORT).show();
-            }
-        }
-        // Later, more code will go here to handle the result from some exceptions...
-    }
 
     private static final String SCOPE =
             "oauth2:https://www.googleapis.com/auth/userinfo.profile";
 
-    /**
-     * Attempts to retrieve the username.
-     * If the account is not yet known, invoke the picker. Once the account is known,
-     * start an instance of the AsyncTask to get the auth token and do work with it.
-     */
-    private void getUsername() {
-        if (mEmail == null) {
-            pickUserAccount(this);
-        } else {
-            if (isDeviceOnline()) {
-                new GetUsernameTask(this, mEmail, SCOPE).execute();
-            } else {
-                Toast.makeText(this, R.string.not_online, Toast.LENGTH_LONG).show();
-            }
+    private boolean checkUserAccount() {
+        accountName = AccountUtils.getAccountName(this);
+        if (accountName == null) {
+            // Then the user was not found in the SharedPreferences. Either the
+            // application deliberately removed the account, or the application's
+            // data has been forcefully erased.
+            showAccountPicker();
+            return false;
         }
+
+        Account account = AccountUtils.getGoogleAccountByName(this, accountName);
+        if (account == null) {
+            // Then the account has since been removed.
+            AccountUtils.removeAccount(this);
+            showAccountPicker();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showAccountPicker() {
+        Intent pickAccountIntent = AccountPicker.newChooseAccountIntent(
+                null, null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE},
+                true, null, null, null, null);
+        startActivityForResult(pickAccountIntent, REQUEST_CODE_PICK_ACCOUNT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_RECOVER_PLAY_SERVICES:
+      /* ... */
+            case REQUEST_CODE_PICK_ACCOUNT:
+                if (resultCode == RESULT_OK) {
+                    accountName = data.getStringExtra(
+                            AccountManager.KEY_ACCOUNT_NAME);
+                    AccountUtils.setAccountName(this, accountName);
+                } else if (resultCode == RESULT_CANCELED) {
+                    Toast.makeText(this, "This application requires a Google account.",
+                            Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
+
+    /**
+     * This method is a hook for background threads and async tasks that need to
+     * provide the user a response UI when an exception occurs.
+     */
+    public void handleException(final Exception e) {
+        // Because this call comes from the AsyncTask, we must ensure that the following
+        // code instead executes on the UI thread.
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (e instanceof GooglePlayServicesAvailabilityException) {
+                    // The Google Play services APK is old, disabled, or not present.
+                    // Show a dialog created by Google Play services that allows
+                    // the user to update the APK
+                    int statusCode = ((GooglePlayServicesAvailabilityException) e)
+                            .getConnectionStatusCode();
+                    Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode, activity ,
+                            REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
+                    dialog.show();
+                } else if (e instanceof UserRecoverableAuthException) {
+                    // Unable to authenticate, such as when the user has not yet granted
+                    // the app access to the account, but the user can fix this.
+                    // Forward the user to an activity in Google Play services.
+                    Intent intent = ((UserRecoverableAuthException) e).getIntent();
+                    startActivityForResult(intent,
+                            REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
+                }
+            }
+        });
+    }
+
+    private boolean checkPlayServices() {
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (status != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(status)) {
+                showErrorDialog(status);
+            } else {
+                Toast.makeText(this, "This device is not supported.",
+                        Toast.LENGTH_LONG).show();
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    void showErrorDialog(int code) {
+        GooglePlayServicesUtil.getErrorDialog(code, this,
+                REQUEST_CODE_RECOVER_PLAY_SERVICES).show();
     }
 
     private boolean isDeviceOnline() {
