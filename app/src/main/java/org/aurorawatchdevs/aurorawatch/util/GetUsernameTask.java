@@ -61,7 +61,7 @@ public class GetUsernameTask extends AsyncTask<Void,Void,Void>  {
                 httpParameters.add(new BasicNameValuePair("token", token));
                 httpParameters.add(new BasicNameValuePair("level", ConvertedAlertLevel(mAlertLevel)));
                 Log.i(getClass().getSimpleName(), "Making Post request for alert level " + ConvertedAlertLevel(mAlertLevel));
-                HttpUtil.postRequest("http://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
+                HttpUtil.postRequest("https://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
             }
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error in GetUsernameTask... ");
