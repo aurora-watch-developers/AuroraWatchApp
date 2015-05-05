@@ -7,6 +7,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -151,6 +153,12 @@ public class SettingsActivity extends ActionBarActivity {
         if (!checkUserAccount())
             return false;
 
+        if (!isDeviceOnline())
+        {
+            Toast.makeText(this,getResources().getString(R.string.not_online),Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         new GetUsernameTask(this, accountName, SCOPE, alertLevel.name()).execute();
         return true;
     }
@@ -264,6 +272,12 @@ public class SettingsActivity extends ActionBarActivity {
     }
 
     private boolean isDeviceOnline() {
-        return true; //TODO implement this!
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo ni = cm.getActiveNetworkInfo();
+            if (ni == null) {
+                // There are no active networks.
+                return false;
+            }
+            return ni.isConnected();
     }
 }
