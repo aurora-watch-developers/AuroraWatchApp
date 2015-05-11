@@ -80,13 +80,9 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
         try {
             return GoogleAuthUtil.getToken(mActivity, mEmail, mScope);
         } catch (UserRecoverableAuthException userRecoverableException) {
-            // GooglePlayServices.apk is either old, disabled, or not present
-            // so we need to show the user some UI in the activity to recover.
             mActivity.handleException(userRecoverableException);
         } catch (GoogleAuthException fatalException) {
-            // Some other type of unrecoverable exception has occurred.
-            // Report and log the error as appropriate for your app.
-            //...
+            mActivity.handleException(fatalException);
         }
         return null;
     }

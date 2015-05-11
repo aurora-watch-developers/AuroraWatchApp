@@ -247,6 +247,11 @@ public class SettingsActivity extends ActionBarActivity {
                     startActivityForResult(intent,
                             REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
                 }
+                else
+                {
+                    Toast.makeText(activity,"An exception occurred while saving your alert setting: "
+                            + e.getMessage(),Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
