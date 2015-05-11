@@ -28,7 +28,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import org.aurorawatchdevs.aurorawatch.AlertLevel;
 import org.aurorawatchdevs.aurorawatch.R;
 import org.aurorawatchdevs.aurorawatch.util.AccountUtils;
-import org.aurorawatchdevs.aurorawatch.util.GetUsernameTask;
+import org.aurorawatchdevs.aurorawatch.util.SaveAlertPreferenceTask;
 
 /**
  * Activity for application settings, including alert level.
@@ -159,7 +159,7 @@ public class SettingsActivity extends ActionBarActivity {
             return false;
         }
 
-        new GetUsernameTask(this, accountName, SCOPE, alertLevel.name()).execute();
+        new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name()).execute();
         return true;
     }
 

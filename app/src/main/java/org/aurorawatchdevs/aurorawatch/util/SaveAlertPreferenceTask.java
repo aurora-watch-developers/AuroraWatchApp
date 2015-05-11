@@ -18,13 +18,13 @@ import java.util.List;
 /**
  * Created by jamesb on 30/04/2015.
  */
-public class GetUsernameTask extends AsyncTask<Void,Void,Void>  {
+public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
     SettingsActivity mActivity;
     String mScope;
     String mEmail;
     String mAlertLevel;
 
-    public GetUsernameTask(SettingsActivity activity, String name, String scope, String alertLevel) {
+    public SaveAlertPreferenceTask(SettingsActivity activity, String name, String scope, String alertLevel) {
         this.mActivity = activity;
         this.mScope = scope;
         this.mEmail = name;
@@ -35,6 +35,8 @@ public class GetUsernameTask extends AsyncTask<Void,Void,Void>  {
     {
         switch (alertLevel)
         {
+            case "test":
+                return "TEST";
             case "minor":
                 return  "GREEN";
             case "amber":
@@ -64,12 +66,8 @@ public class GetUsernameTask extends AsyncTask<Void,Void,Void>  {
                 HttpUtil.postRequest("https://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
             }
         } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error in GetUsernameTask... ");
+            Log.e(getClass().getSimpleName(), "Error in SaveAlertPreferenceTask... ");
             e.printStackTrace();
-            // The fetchToken() method handles Google-specific exceptions,
-            // so this indicates something went wrong at a higher level.
-            // TIP: Check for network connectivity before starting the AsyncTask.
-            //...
         }
         return null;
     }
