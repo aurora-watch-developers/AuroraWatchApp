@@ -165,10 +165,12 @@ public class SettingsActivity extends ActionBarActivity {
 
     static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001;
     static final int REQUEST_CODE_PICK_ACCOUNT = 1002;
+    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
 
-
-    private static final String SCOPE =
-            "oauth2:https://www.googleapis.com/auth/userinfo.profile";
+    //private static final String SCOPE =
+    //        "oauth2:https://www.googleapis.com/auth/userinfo.profile";
+    private static final String SCOPE = "audience:server:client_id:675205179905-34iahvkv5efvk3n5tbbt9qkr7en0hup3.apps.googleusercontent.com";
+    //private static final String SCOPE = "audience:server:client_id:675205179905-kbg5ckfhlsmn801vneo5f8v8bgq2mmd8.apps.googleusercontent.com";
 
     private boolean checkUserAccount() {
         accountName = AccountUtils.getAccountName(this);
@@ -217,8 +219,6 @@ public class SettingsActivity extends ActionBarActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
 
     /**
      * This method is a hook for background threads and async tasks that need to
