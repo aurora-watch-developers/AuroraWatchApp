@@ -159,8 +159,14 @@ public class SettingsActivity extends ActionBarActivity {
             return false;
         }
 
-        new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name()).execute();
-        return true;
+        if (checkPlayServices())
+        {
+        
+
+            new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name()).execute();
+            return true;
+        }
+        return false;
     }
 
     static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001;
