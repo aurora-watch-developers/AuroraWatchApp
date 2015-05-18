@@ -41,22 +41,8 @@ public class GcmRegistrationTask extends AsyncTask<Void, Void, Void> {
             mRegistrationId = mGcm.register(mSENDER_ID);
             msg = "Device registered, registration ID=" + mRegistrationId;
             Log.i(getClass().getSimpleName(), msg);
-
             storeRegistrationId(mRegistrationId, mAppVersion, mAppName);
 
-            // You should send the registration ID to your server over HTTP,
-            // so it can use GCM/HTTP or CCS to send messages to your app.
-            // The request to your server should be authenticated if your app
-            // is using accounts.
-
-            //sendRegistrationIdToBackend(); //TODO - our save-alert should do this at the same time. Right?!
-
-            // For this demo: we don't need to send it because the device
-            // will send upstream messages to a server that echo back the
-            // message using the 'from' address in the message.
-
-            // Persist the registration ID - no need to register again.
-            //storeRegistrationId();
         } catch (IOException ex) {
             msg = "Error :" + ex.getMessage();
             Log.e(getClass().getSimpleName(), msg);

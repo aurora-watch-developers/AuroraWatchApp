@@ -184,19 +184,13 @@ public class SettingsActivity extends ActionBarActivity {
 
 
             if (registrationId.isEmpty()) {
-                GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm,this,SENDER_ID, appVersion, appName);
+                GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm, this, SENDER_ID, appVersion, appName);
                 registrationTask.execute();
-
-
-                if (!registrationTask.mRegistrationId.isEmpty()) {
-                    registrationId = registrationTask.mRegistrationId;
-
-                    new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name(), registrationId).execute();
-                    return true;
-                }
-                return  false;
+                return false;
             }
-            return false;
+
+            new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name(), registrationId).execute();
+            return true;
         }
         return false;
     }
