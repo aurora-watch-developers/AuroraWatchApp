@@ -35,6 +35,14 @@ import org.aurorawatchdevs.aurorawatch.util.SaveAlertPreferenceTask;
  */
 public class SettingsActivity extends ActionBarActivity {
 
+
+    static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001;
+    static final int REQUEST_CODE_PICK_ACCOUNT = 1002;
+    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
+    static final String PROPERTY_REG_ID = "registration_id";
+    static final String PROPERTY_APP_VERSION = "appVersion";
+    static final String SCOPE = "audience:server:client_id:675205179905-34iahvkv5efvk3n5tbbt9qkr7en0hup3.apps.googleusercontent.com";
+
     private Button alertNone;
     private Button alertMin;
     private Button alertAmber;
@@ -161,22 +169,13 @@ public class SettingsActivity extends ActionBarActivity {
 
         if (checkPlayServices())
         {
-        
+
 
             new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name()).execute();
             return true;
         }
         return false;
     }
-
-    static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001;
-    static final int REQUEST_CODE_PICK_ACCOUNT = 1002;
-    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
-
-    //private static final String SCOPE =
-    //        "oauth2:https://www.googleapis.com/auth/userinfo.profile";
-    private static final String SCOPE = "audience:server:client_id:675205179905-34iahvkv5efvk3n5tbbt9qkr7en0hup3.apps.googleusercontent.com";
-    //private static final String SCOPE = "audience:server:client_id:675205179905-kbg5ckfhlsmn801vneo5f8v8bgq2mmd8.apps.googleusercontent.com";
 
     private boolean checkUserAccount() {
         accountName = AccountUtils.getAccountName(this);
