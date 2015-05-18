@@ -53,6 +53,7 @@ public class SettingsActivity extends ActionBarActivity {
     private AlertLevel lastAlertLevel;
     private String accountName;
     private Activity activity;
+    private String registrationId;
 
     private void setAlertButton() {
         alertNone.setTextColor(alertLevel == AlertLevel.none ? Color.YELLOW : Color.WHITE);
@@ -171,7 +172,7 @@ public class SettingsActivity extends ActionBarActivity {
         {
 
 
-            new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name()).execute();
+            new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name(), registrationId).execute();
             return true;
         }
         return false;

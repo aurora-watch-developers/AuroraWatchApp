@@ -23,12 +23,14 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
     String mScope;
     String mEmail;
     String mAlertLevel;
+    String mRegistrationId;
 
-    public SaveAlertPreferenceTask(SettingsActivity activity, String name, String scope, String alertLevel) {
+    public SaveAlertPreferenceTask(SettingsActivity activity, String name, String scope, String alertLevel, String registrationId) {
         this.mActivity = activity;
         this.mScope = scope;
         this.mEmail = name;
         this.mAlertLevel = alertLevel;
+        this.mRegistrationId = registrationId;
     }
 
     private String ConvertedAlertLevel(String alertLevel)
@@ -58,10 +60,11 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
             String token = fetchToken();
             if (token != null) {
                 //try and post the setting...
-                Log.i(getClass().getSimpleName(),"Got AuroraWatch Token " + token);
+                Log.i(getClass().getSimpleName(), "Got AuroraWatch Token " + token);
                 List<NameValuePair> httpParameters = new ArrayList<NameValuePair>();
                 httpParameters.add(new BasicNameValuePair("token", token));
                 httpParameters.add(new BasicNameValuePair("level", ConvertedAlertLevel(mAlertLevel)));
+                httpParameters.add(new BasicNameValuePair("registrationId", mRegistrationId));
                 Log.i(getClass().getSimpleName(), "Making Post request for alert level " + ConvertedAlertLevel(mAlertLevel));
                 HttpUtil.postRequest("https://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
             }
