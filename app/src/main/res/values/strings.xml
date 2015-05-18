@@ -51,4 +51,8 @@
     <string name="url_samnet">"<a href="http://spears.lancs.ac.uk/samnet/">SAMNET</a>"</string>
     <string name="url_aurorawatchnet">"<a href="http://aurorawatch.net/">AuroraWatchNet</a>"</string>
     <string name="url_support">"<a href="https://groups.google.com/forum/#!forum/aurorawatch-uk-android-app">AuroraWatch UK App Support</a>"</string>
+    <string name="pick_account">You cannot sign up for push alerts without selecting an account</string>
+    <string name="not_online">You are not currently connected to the internet, so your Notification setting cannot be saved.</string>
+    <string name="playservices_error">Sorry, but Google Play Services is either outdated or missing from your device</string>
+    <string name="gps_warning_label">Setting alert notification level will require AuroraWatch UK to link to your Google account</string>
 </resources>

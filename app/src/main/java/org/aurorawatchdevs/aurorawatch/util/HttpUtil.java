@@ -5,15 +5,27 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpParams;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
+import org.apache.http.util.EntityUtils;
 import org.aurorawatchdevs.aurorawatch.R;
 
 /**
@@ -25,7 +37,6 @@ public class HttpUtil {
         HttpURLConnection conn = null;
         InputStream in = null;
         OutputStream out = null;
-
 
         File file = new File(path);
         try {
@@ -84,6 +95,31 @@ public class HttpUtil {
         Intent intent = new Intent(Intent.ACTION_VIEW, destination);
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(intent);
+        }
+    }
+
+    public static void postRequest(String url, List<NameValuePair> params) {
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpPost httpPost = new HttpPost(url);
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
+            HttpResponse response = httpClient.execute(httpPost);
+            Log.i(HttpUtil.class.getSimpleName(), "AuroraWatch alert request status: "
+                    + response.getStatusLine());
+            Log.i(HttpUtil.class.getSimpleName(), "AuroraWatch alert request response: "
+                    + EntityUtils.toString(response.getEntity()));
+        }
+        catch (UnsupportedEncodingException unsupportedEncodingException) {
+            Log.e(HttpUtil.class.getSimpleName(), "UnsupportedEncodingException");
+            unsupportedEncodingException.printStackTrace();
+        }
+        catch (ClientProtocolException clientProtocolException){
+            Log.e(HttpUtil.class.getSimpleName(), "ClientProtocolException");
+            clientProtocolException.printStackTrace();
+        }
+        catch (IOException ioException){
+            Log.e(HttpUtil.class.getSimpleName(), "IOException");
+            ioException.printStackTrace();
         }
     }
 }
