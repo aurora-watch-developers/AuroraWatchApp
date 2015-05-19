@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +35,7 @@ import org.aurorawatchdevs.aurorawatch.AlertLevel;
 import org.aurorawatchdevs.aurorawatch.R;
 import org.aurorawatchdevs.aurorawatch.util.AccountUtils;
 import org.aurorawatchdevs.aurorawatch.util.GcmRegistrationTask;
+import org.aurorawatchdevs.aurorawatch.util.IAsyncFetchListener;
 import org.aurorawatchdevs.aurorawatch.util.SaveAlertPreferenceTask;
 
 import java.io.IOException;
@@ -65,6 +67,7 @@ public class SettingsActivity extends ActionBarActivity {
     private int appVersion;
     private GoogleCloudMessaging gcm;
     private String SENDER_ID = "675205179905";
+    private ProgressDialog gcmProgressDialog;
 
     private void setAlertButton() {
         alertNone.setTextColor(alertLevel == AlertLevel.none ? Color.YELLOW : Color.WHITE);
@@ -169,7 +172,7 @@ public class SettingsActivity extends ActionBarActivity {
         }
     }
 
-    private boolean SaveAlertSetting(AlertLevel alertLevel) {
+    private boolean SaveAlertSetting(final AlertLevel alertLevel) {
         if (!checkUserAccount())
             return false;
 
@@ -184,7 +187,25 @@ public class SettingsActivity extends ActionBarActivity {
 
 
             if (registrationId.isEmpty()) {
+                gcmProgressDialog = ProgressDialog.show(activity,"Please wait","Registering with Google Cloud Services");
                 GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm, this, SENDER_ID, appVersion, appName);
+                registrationTask.setListener(new IAsyncFetchListener() {
+                    public void onComplete(final String result) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(activity,result,Toast.LENGTH_SHORT).show();
+                                if (gcmProgressDialog != null)
+                                    gcmProgressDialog.dismiss();
+
+                                if (result == "SUCCESS") {
+                                    new SaveAlertPreferenceTask((SettingsActivity)activity, accountName, SCOPE, alertLevel.name(), registrationId).execute();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Registration with Google Cloud Services failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
                 registrationTask.execute();
                 return false;
             }

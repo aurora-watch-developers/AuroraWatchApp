@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Created by jamesb on 18/05/2015.
  */
-public class GcmRegistrationTask extends AsyncTask<Void, Void, Void> {
+public class GcmRegistrationTask extends AsyncTask<Void, Void, String> {
 
     GoogleCloudMessaging mGcm;
     Context mContext;
@@ -22,6 +22,7 @@ public class GcmRegistrationTask extends AsyncTask<Void, Void, Void> {
     String mPROPERTY_APP_VERSION = "appVersion";
     String mAppName;
     int mAppVersion;
+    public IAsyncFetchListener fetchListener = null;
 
     public GcmRegistrationTask(GoogleCloudMessaging gcm, Context context, String SENDER_ID, int appVersion, String appName) {
         mGcm = gcm;
@@ -31,8 +32,12 @@ public class GcmRegistrationTask extends AsyncTask<Void, Void, Void> {
         mAppVersion = appVersion;
     }
 
+    public void setListener(IAsyncFetchListener listener) {
+        this.fetchListener = listener;
+    }
+
     @Override
-    protected Void doInBackground(Void... params) {
+    protected String doInBackground(Void... params) {
         String msg = "";
         try {
             if (mGcm == null) {
@@ -42,16 +47,27 @@ public class GcmRegistrationTask extends AsyncTask<Void, Void, Void> {
             msg = "Device registered, registration ID=" + mRegistrationId;
             Log.i(getClass().getSimpleName(), msg);
             storeRegistrationId(mRegistrationId, mAppVersion, mAppName);
-
+            return "SUCCESS";
         } catch (IOException ex) {
+            msg = "IO Error :" + ex.getMessage();
+            Log.e(getClass().getSimpleName(), msg);
+            ex.printStackTrace();
+            return "FAIL";
+        }
+        catch (Exception ex) {
             msg = "Error :" + ex.getMessage();
             Log.e(getClass().getSimpleName(), msg);
             ex.printStackTrace();
-            // If there is an error, don't just keep trying to register.
-            // Require the user to click a button again, or perform
-            // exponential back-off.
+            return "FAIL";
         }
-        return null;
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+
+        if (fetchListener != null)
+            fetchListener.onComplete(result);
     }
 
     private void storeRegistrationId(String registrationId, int appVersion, String appName) {
@@ -64,4 +80,3 @@ public class GcmRegistrationTask extends AsyncTask<Void, Void, Void> {
         editor.commit();
     }
 }
-
