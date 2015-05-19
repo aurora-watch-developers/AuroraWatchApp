@@ -40,13 +40,13 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
             case "test":
                 return "TEST";
             case "minor":
-                return  "GREEN";
+                return  "YELLOW";
             case "amber":
-                return "YELLOW";
+                return "AMBER";
             case "red":
                 return "RED";
             default:
-                return "NONE";
+                return "GREEN";
         }
     }
 
@@ -66,7 +66,7 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
                 httpParameters.add(new BasicNameValuePair("level", ConvertedAlertLevel(mAlertLevel)));
                 httpParameters.add(new BasicNameValuePair("registrationId", mRegistrationId));
                 Log.i(getClass().getSimpleName(), "Making Post request for alert level " + ConvertedAlertLevel(mAlertLevel));
-                HttpUtil.postRequest("https://4-dot-aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
+                HttpUtil.postRequest("https://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
             }
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "IO Error in SaveAlertPreferenceTask... ");
