@@ -98,7 +98,7 @@ public class HttpUtil {
         }
     }
 
-    public static void postRequest(String url, List<NameValuePair> params) {
+    public static String postRequest(String url, List<NameValuePair> params) {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
         try {
@@ -106,8 +106,14 @@ public class HttpUtil {
             HttpResponse response = httpClient.execute(httpPost);
             Log.i(HttpUtil.class.getSimpleName(), "AuroraWatch alert request status: "
                     + response.getStatusLine());
-            Log.i(HttpUtil.class.getSimpleName(), "AuroraWatch alert request response: "
-                    + EntityUtils.toString(response.getEntity()));
+            String serverResponse = EntityUtils.toString(response.getEntity());
+                    Log.i(HttpUtil.class.getSimpleName(), "AuroraWatch alert request response: "
+                            + serverResponse);
+            if (serverResponse.contains("TokenCheckerService$TokenValidationException"))
+            {
+                throw new Exception("TokenValidationException");
+            }
+            return "OK";
         }
         catch (UnsupportedEncodingException unsupportedEncodingException) {
             Log.e(HttpUtil.class.getSimpleName(), "UnsupportedEncodingException");
@@ -121,5 +127,11 @@ public class HttpUtil {
             Log.e(HttpUtil.class.getSimpleName(), "IOException");
             ioException.printStackTrace();
         }
+        catch (Exception exception)
+        {
+            Log.e(HttpUtil.class.getSimpleName(), exception.getMessage());
+            exception.printStackTrace();
+        }
+        return "ERR";
     }
 }

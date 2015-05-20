@@ -66,7 +66,9 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
                 httpParameters.add(new BasicNameValuePair("level", ConvertedAlertLevel(mAlertLevel)));
                 httpParameters.add(new BasicNameValuePair("registrationId", mRegistrationId));
                 Log.i(getClass().getSimpleName(), "Making Post request for alert level " + ConvertedAlertLevel(mAlertLevel));
-                HttpUtil.postRequest("https://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
+                String success = HttpUtil.postRequest("https://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
+                if (success.equals("ERR"))
+                    mActivity.handleException(new Exception("Token validation failed"));
             }
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "IO Error in SaveAlertPreferenceTask... ");
