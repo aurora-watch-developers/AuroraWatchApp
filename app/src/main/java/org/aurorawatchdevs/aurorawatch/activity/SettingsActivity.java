@@ -173,6 +173,7 @@ public class SettingsActivity extends ActionBarActivity {
     }
 
     private boolean SaveAlertSetting(final AlertLevel alertLevel) {
+
         if (!checkUserAccount())
             return false;
 
@@ -185,7 +186,6 @@ public class SettingsActivity extends ActionBarActivity {
             gcm = GoogleCloudMessaging.getInstance(this);
             registrationId = getRegistrationId(getApplicationContext());
 
-
             if (registrationId.isEmpty()) {
                 gcmProgressDialog = ProgressDialog.show(activity,"Please wait","Registering with Google Cloud Services");
                 GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm, this, SENDER_ID, appVersion, appName);
@@ -193,13 +193,13 @@ public class SettingsActivity extends ActionBarActivity {
                     public void onComplete(final String result) {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(activity,result,Toast.LENGTH_SHORT).show();
                                 if (gcmProgressDialog != null)
                                     gcmProgressDialog.dismiss();
 
                                 if (result == "SUCCESS") {
-                                    new SaveAlertPreferenceTask((SettingsActivity)activity, accountName, SCOPE, alertLevel.name(), registrationId).execute();
+                                    SaveAlertPreference((SettingsActivity)activity, accountName, SCOPE, alertLevel.name(), registrationId);
                                 } else {
+                                    UnSaveUiState();
                                     Toast.makeText(getApplicationContext(), "Registration with Google Cloud Services failed", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -207,13 +207,43 @@ public class SettingsActivity extends ActionBarActivity {
                     }
                 });
                 registrationTask.execute();
-                return false;
             }
 
-            new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name(), registrationId).execute();
+            SaveAlertPreference(this, accountName, SCOPE, alertLevel.name(), registrationId);
             return true;
         }
         return false;
+    }
+
+    private void SaveAlertPreference(final SettingsActivity activity, String accountName, String scope, String alertLevel, String registrationId)
+    {
+        SaveAlertPreferenceTask saveAlertPreferenceTask = new SaveAlertPreferenceTask(activity, accountName, scope, alertLevel, registrationId);
+
+        gcmProgressDialog = ProgressDialog.show(activity,"Please wait","Saving your alert setting...");
+        saveAlertPreferenceTask.setListener(new IAsyncFetchListener() {
+            public void onComplete(final String result) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(activity,result,Toast.LENGTH_SHORT).show();
+                        if (gcmProgressDialog != null)
+                            gcmProgressDialog.dismiss();
+
+                        if (result == "ERR") {
+                            UnSaveUiState();
+                            Toast.makeText(getApplicationContext(), "Saving your alert preference failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        saveAlertPreferenceTask.execute();
+    }
+
+    private void UnSaveUiState()
+    {
+        alertLevel = lastAlertLevel;
+        setAlertButton();
     }
 
     private boolean checkUserAccount() {

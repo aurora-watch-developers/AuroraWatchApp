@@ -18,12 +18,13 @@ import java.util.List;
 /**
  * Created by jamesb on 30/04/2015.
  */
-public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
+public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,String>  {
     SettingsActivity mActivity;
     String mScope;
     String mEmail;
     String mAlertLevel;
     String mRegistrationId;
+    public IAsyncFetchListener fetchListener = null;
 
     public SaveAlertPreferenceTask(SettingsActivity activity, String name, String scope, String alertLevel, String registrationId) {
         this.mActivity = activity;
@@ -31,6 +32,10 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
         this.mEmail = name;
         this.mAlertLevel = alertLevel;
         this.mRegistrationId = registrationId;
+    }
+
+    public void setListener(IAsyncFetchListener listener) {
+        this.fetchListener = listener;
     }
 
     private String ConvertedAlertLevel(String alertLevel)
@@ -55,7 +60,7 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
      * on the AsyncTask instance.
      */
     @Override
-    protected Void doInBackground(Void... params) {
+    protected String doInBackground(Void... params) {
         try {
             String token = fetchToken();
             if (token != null) {
@@ -67,19 +72,31 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,Void>  {
                 httpParameters.add(new BasicNameValuePair("registrationId", mRegistrationId));
                 Log.i(getClass().getSimpleName(), "Making Post request for alert level " + ConvertedAlertLevel(mAlertLevel));
                 String success = HttpUtil.postRequest("https://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
-                if (success.equals("ERR"))
+                if (success.equals("ERR")) {
                     mActivity.handleException(new Exception("Token validation failed"));
+                    return "ERR";
+                }
             }
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "IO Error in SaveAlertPreferenceTask... ");
             e.printStackTrace();
+            return "ERR";
         }
         catch (Exception e) {
             Log.e(getClass().getSimpleName(), "Error in SaveAlertPreferenceTask... ");
             e.printStackTrace();
+            return "ERR";
         }
 
-        return null;
+        return "OK";
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+
+        if (fetchListener != null)
+            fetchListener.onComplete(result);
     }
 
     /**
