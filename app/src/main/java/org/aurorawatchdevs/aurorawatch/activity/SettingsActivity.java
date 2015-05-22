@@ -187,7 +187,7 @@ public class SettingsActivity extends ActionBarActivity {
             registrationId = getRegistrationId(getApplicationContext());
 
             if (registrationId.isEmpty()) {
-                gcmProgressDialog = ProgressDialog.show(activity,"Please wait","Registering with Google Cloud Services");
+                gcmProgressDialog = ProgressDialog.show(activity,getResources().getString(R.string.pleasewait),"Registering with Google Cloud Services");
                 GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm, this, SENDER_ID, appVersion, appName);
                 registrationTask.setListener(new IAsyncFetchListener() {
                     public void onComplete(final String result) {
@@ -220,7 +220,7 @@ public class SettingsActivity extends ActionBarActivity {
     {
         SaveAlertPreferenceTask saveAlertPreferenceTask = new SaveAlertPreferenceTask(activity, accountName, scope, alertLevel, registrationId);
 
-        gcmProgressDialog = ProgressDialog.show(activity,"Please wait","Saving your alert setting...");
+        gcmProgressDialog = ProgressDialog.show(activity,getResources().getString(R.string.pleasewait),"Saving your alert setting...");
         saveAlertPreferenceTask.setListener(new IAsyncFetchListener() {
             public void onComplete(final String result) {
                 runOnUiThread(new Runnable() {
