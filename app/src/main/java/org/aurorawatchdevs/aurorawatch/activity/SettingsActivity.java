@@ -224,13 +224,16 @@ public class SettingsActivity extends ActionBarActivity {
             public void onComplete(final String result) {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(activity,result,Toast.LENGTH_SHORT).show();
                         if (gcmProgressDialog != null)
                             gcmProgressDialog.dismiss();
 
                         if (result == "ERR") {
                             UnSaveUiState();
                             Toast.makeText(getApplicationContext(), "Saving your alert preference failed", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(activity,"Alert preference was saved successfully",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
