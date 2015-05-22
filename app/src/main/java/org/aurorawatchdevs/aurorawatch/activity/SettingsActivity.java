@@ -208,8 +208,9 @@ public class SettingsActivity extends ActionBarActivity {
                 });
                 registrationTask.execute();
             }
-
-            SaveAlertPreference(this, accountName, SCOPE, alertLevel.name(), registrationId);
+            else {
+                SaveAlertPreference(this, accountName, SCOPE, alertLevel.name(), registrationId);
+            }
             return true;
         }
         return false;
