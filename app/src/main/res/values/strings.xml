@@ -55,4 +55,5 @@
     <string name="not_online">You are not currently connected to the internet, so your Notification setting cannot be saved.</string>
     <string name="playservices_error">Sorry, but Google Play Services is either outdated or missing from your device</string>
     <string name="gps_warning_label">Setting alert notification level will require AuroraWatch UK to link to your Google account</string>
+    <string name="pleasewait">Please wait</string>
 </resources>

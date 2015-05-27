@@ -4,11 +4,16 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -24,16 +29,29 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.aurorawatchdevs.aurorawatch.AlertLevel;
 import org.aurorawatchdevs.aurorawatch.R;
 import org.aurorawatchdevs.aurorawatch.util.AccountUtils;
+import org.aurorawatchdevs.aurorawatch.util.GcmRegistrationTask;
+import org.aurorawatchdevs.aurorawatch.util.IAsyncFetchListener;
 import org.aurorawatchdevs.aurorawatch.util.SaveAlertPreferenceTask;
+
+import java.io.IOException;
 
 /**
  * Activity for application settings, including alert level.
  */
 public class SettingsActivity extends ActionBarActivity {
+
+
+    static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001;
+    static final int REQUEST_CODE_PICK_ACCOUNT = 1002;
+    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
+    static final String PROPERTY_REG_ID = "registration_id";
+    static final String PROPERTY_APP_VERSION = "appVersion";
+    static final String SCOPE = "audience:server:client_id:675205179905-34iahvkv5efvk3n5tbbt9qkr7en0hup3.apps.googleusercontent.com";
 
     private Button alertNone;
     private Button alertMin;
@@ -45,6 +63,11 @@ public class SettingsActivity extends ActionBarActivity {
     private AlertLevel lastAlertLevel;
     private String accountName;
     private Activity activity;
+    private String registrationId;
+    private int appVersion;
+    private GoogleCloudMessaging gcm;
+    private String SENDER_ID = "675205179905";
+    private ProgressDialog gcmProgressDialog;
 
     private void setAlertButton() {
         alertNone.setTextColor(alertLevel == AlertLevel.none ? Color.YELLOW : Color.WHITE);
@@ -149,28 +172,83 @@ public class SettingsActivity extends ActionBarActivity {
         }
     }
 
-    private boolean SaveAlertSetting(AlertLevel alertLevel) {
+    private boolean SaveAlertSetting(final AlertLevel alertLevel) {
+
         if (!checkUserAccount())
             return false;
 
-        if (!isDeviceOnline())
-        {
-            Toast.makeText(this,getResources().getString(R.string.not_online),Toast.LENGTH_SHORT).show();
+        if (!isDeviceOnline()) {
+            Toast.makeText(this, getResources().getString(R.string.not_online), Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        new SaveAlertPreferenceTask(this, accountName, SCOPE, alertLevel.name()).execute();
-        return true;
+        if (checkPlayServices()) {
+            gcm = GoogleCloudMessaging.getInstance(this);
+            registrationId = getRegistrationId(getApplicationContext());
+
+            if (registrationId.isEmpty()) {
+                gcmProgressDialog = ProgressDialog.show(activity,getResources().getString(R.string.pleasewait),"Registering with Google Cloud Services");
+                GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm, this, SENDER_ID, appVersion, appName);
+                registrationTask.setListener(new IAsyncFetchListener() {
+                    public void onComplete(final String result) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                if (gcmProgressDialog != null)
+                                    gcmProgressDialog.dismiss();
+
+                                if (result == "SUCCESS") {
+                                    SaveAlertPreference((SettingsActivity)activity, accountName, SCOPE, alertLevel.name(), registrationId);
+                                } else {
+                                    UnSaveUiState();
+                                    Toast.makeText(getApplicationContext(), "Registration with Google Cloud Services failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
+                registrationTask.execute();
+            }
+            else {
+                SaveAlertPreference(this, accountName, SCOPE, alertLevel.name(), registrationId);
+            }
+            return true;
+        }
+        return false;
     }
 
-    static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001;
-    static final int REQUEST_CODE_PICK_ACCOUNT = 1002;
-    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
+    private void SaveAlertPreference(final SettingsActivity activity, String accountName, String scope, String alertLevel, String registrationId)
+    {
+        SaveAlertPreferenceTask saveAlertPreferenceTask = new SaveAlertPreferenceTask(activity, accountName, scope, alertLevel, registrationId);
 
-    //private static final String SCOPE =
-    //        "oauth2:https://www.googleapis.com/auth/userinfo.profile";
-    private static final String SCOPE = "audience:server:client_id:675205179905-34iahvkv5efvk3n5tbbt9qkr7en0hup3.apps.googleusercontent.com";
-    //private static final String SCOPE = "audience:server:client_id:675205179905-kbg5ckfhlsmn801vneo5f8v8bgq2mmd8.apps.googleusercontent.com";
+        gcmProgressDialog = ProgressDialog.show(activity,getResources().getString(R.string.pleasewait),"Saving your alert setting...");
+        saveAlertPreferenceTask.setListener(new IAsyncFetchListener() {
+            public void onComplete(final String result) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (gcmProgressDialog != null)
+                            gcmProgressDialog.dismiss();
+
+                        if (result == "ERR") {
+                            UnSaveUiState();
+                            Toast.makeText(getApplicationContext(), "Saving your alert preference failed", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(activity,"Alert preference was saved successfully",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        saveAlertPreferenceTask.execute();
+    }
+
+    private void UnSaveUiState()
+    {
+        alertLevel = lastAlertLevel;
+        setAlertButton();
+    }
 
     private boolean checkUserAccount() {
         accountName = AccountUtils.getAccountName(this);
@@ -236,7 +314,7 @@ public class SettingsActivity extends ActionBarActivity {
                     // the user to update the APK
                     int statusCode = ((GooglePlayServicesAvailabilityException) e)
                             .getConnectionStatusCode();
-                    Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode, activity ,
+                    Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode, activity,
                             REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
                     dialog.show();
                 } else if (e instanceof UserRecoverableAuthException) {
@@ -246,11 +324,9 @@ public class SettingsActivity extends ActionBarActivity {
                     Intent intent = ((UserRecoverableAuthException) e).getIntent();
                     startActivityForResult(intent,
                             REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
-                }
-                else
-                {
-                    Toast.makeText(activity,"An exception occurred while saving your alert setting: "
-                            + e.getMessage(),Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(activity, "An exception occurred while saving your alert setting: "
+                            + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -277,12 +353,43 @@ public class SettingsActivity extends ActionBarActivity {
     }
 
     private boolean isDeviceOnline() {
-            ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-            NetworkInfo ni = cm.getActiveNetworkInfo();
-            if (ni == null) {
-                // There are no active networks.
-                return false;
-            }
-            return ni.isConnected();
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            // There are no active networks.
+            return false;
+        }
+        return ni.isConnected();
+    }
+
+    private String getRegistrationId(Context context) {
+        SharedPreferences settings = getSharedPreferences(appName, 0);
+        String registrationId = settings.getString(PROPERTY_REG_ID, "");
+        if (registrationId.isEmpty()) {
+            Log.i(appName, "Registration not found.");
+            return "";
+        }
+        // Check if app was updated; if so, it must clear the registration ID
+        // since the existing registration ID is not guaranteed to work with
+        // the new app version.
+        int registeredVersion = settings.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int currentVersion = getAppVersion(context);
+        appVersion = currentVersion;
+        if (registeredVersion != currentVersion) {
+            Log.i(appName, "App version changed.");
+            return "";
+        }
+        return registrationId;
+    }
+
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
     }
 }
