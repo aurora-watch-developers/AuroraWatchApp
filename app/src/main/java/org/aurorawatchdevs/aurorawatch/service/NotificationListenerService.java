@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.util.Log;
 import com.google.android.gms.gcm.GcmListenerService;
 
+import org.aurorawatchdevs.aurorawatch.AlertLevel;
+import org.aurorawatchdevs.aurorawatch.Notification;
+
 /**
  * Created by jamesb on 05/06/2015.
  */
@@ -14,17 +17,8 @@ public class NotificationListenerService extends GcmListenerService {
         Log.d("AuroraWatchUK", "From: " + from);
         Log.d("AuroraWatchUK", "Message: " + message);
 
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
+        //Here we might want to trigger a download of 'now' data?
 
-        /**
-         * In some cases it may be useful to show a notification indicating to the user
-         * that a message was received.
-         */
-        //TODO sendNotification(message);
+        Notification.ShowNotification(AlertLevel.amber, getApplicationContext());  //TODO - get from Message?
     }
 }
