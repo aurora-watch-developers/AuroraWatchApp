@@ -18,8 +18,8 @@ public class Notification {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.aw)
-                        .setContentTitle("AuroraWatch activity detected!")
-                        .setContentText(alertLevel.name() + " alert of Auroral activity was received!");
+                        .setContentTitle(context.getString(R.string.notification_header))
+                        .setContentText(alertLevel.name().toUpperCase() + " " + context.getString(R.string.notification_body));
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
 
