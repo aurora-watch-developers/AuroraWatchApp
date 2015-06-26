@@ -17,7 +17,7 @@ public class Notification {
     public static void ShowNotification(String alertLevel, Context context) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.aw)
+                        .setSmallIcon(R.drawable.notificationicon)
                         .setContentTitle(context.getString(R.string.notification_header))
                         .setContentText(alertLevel.toUpperCase() + " " + context.getString(R.string.notification_body));
         // Creates an explicit intent for an Activity in your app

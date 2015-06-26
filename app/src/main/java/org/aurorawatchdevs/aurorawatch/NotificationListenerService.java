@@ -18,7 +18,9 @@ public class NotificationListenerService extends GcmListenerService {
         Log.d("AuroraWatchUK", "Message: " + message);
 
         //Here we might want to trigger a download of 'now' data?
+        if (message == null)
+            message = "unknown"; //avoid nullref if no payload
 
-        Notification.ShowNotification(message, getApplicationContext());  //TODO - get from Message?
+        Notification.ShowNotification(message, getApplicationContext());
     }
 }
