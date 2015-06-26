@@ -1,4 +1,4 @@
-package org.aurorawatchdevs.aurorawatch.service;
+package org.aurorawatchdevs.aurorawatch;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +19,6 @@ public class NotificationListenerService extends GcmListenerService {
 
         //Here we might want to trigger a download of 'now' data?
 
-        Notification.ShowNotification(AlertLevel.amber, getApplicationContext());  //TODO - get from Message?
+        Notification.ShowNotification(message, getApplicationContext());  //TODO - get from Message?
     }
 }
