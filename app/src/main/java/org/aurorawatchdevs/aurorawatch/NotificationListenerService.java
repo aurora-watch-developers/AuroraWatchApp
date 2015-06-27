@@ -13,7 +13,7 @@ import org.aurorawatchdevs.aurorawatch.Notification;
 public class NotificationListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        String message = data.getString("message");
+        String message = data.getString("alertlevel");
         Log.d("AuroraWatchUK", "From: " + from);
         Log.d("AuroraWatchUK", "Message: " + message);
 
