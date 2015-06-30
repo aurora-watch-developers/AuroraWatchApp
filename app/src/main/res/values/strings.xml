@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="appName">AuroraWatch UK</string>
     <string name="appIdentifier">aurora-watch-developers/AuroraWatchApp</string>
     <string name="preferences">Preferences</string>
@@ -56,4 +55,6 @@
     <string name="playservices_error">Sorry, but Google Play Services is either outdated or missing from your device</string>
     <string name="gps_warning_label">Setting alert notification level will require AuroraWatch UK to link to your Google account</string>
     <string name="pleasewait">Please wait</string>
+    <string name="notification_body"> alert of auroral activity was received!</string>
+    <string name="notification_header">AuroraWatch activity detected!</string>
 </resources>
