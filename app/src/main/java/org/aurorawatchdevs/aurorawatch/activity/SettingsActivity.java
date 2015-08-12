@@ -90,10 +90,11 @@ public class SettingsActivity extends ActionBarActivity {
     public void saveAlertLevel() {
         try {
             //Post alert setting to the cloud...
-            if (!SaveAlertSetting(alertLevel)) {
+            if (!SaveAlertSettingToCloud(alertLevel)) {
                 //if that failed, switch back
                 alertLevel = lastAlertLevel;
             } else {
+                //Saving to the cloud worked, so save locally on the device too.
                 SharedPreferences settings = getSharedPreferences(appName, 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("alertLevel", alertLevel.ordinal());
@@ -172,15 +173,15 @@ public class SettingsActivity extends ActionBarActivity {
         }
     }
 
-    private boolean SaveAlertSetting(final AlertLevel alertLevel) {
-
-        if (!checkUserAccount())
-            return false;
+    private boolean SaveAlertSettingToCloud(final AlertLevel alertLevel) {
 
         if (!isDeviceOnline()) {
             Toast.makeText(this, getResources().getString(R.string.not_online), Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        if (!checkUserAccount())
+            return false;
 
         if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(this);
@@ -288,6 +289,7 @@ public class SettingsActivity extends ActionBarActivity {
                     accountName = data.getStringExtra(
                             AccountManager.KEY_ACCOUNT_NAME);
                     AccountUtils.setAccountName(this, accountName);
+
                 } else if (resultCode == RESULT_CANCELED) {
                     Toast.makeText(this, "This application requires a Google account.",
                             Toast.LENGTH_SHORT).show();
