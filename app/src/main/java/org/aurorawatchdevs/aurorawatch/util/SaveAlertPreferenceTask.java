@@ -65,12 +65,12 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,String>  {
             String token = fetchToken();
             if (token != null) {
                 //try and post the setting...
-                Log.i(getClass().getSimpleName(), "Got AuroraWatch Token " + token);
+                Log.i("AuroraWatch", "Got AuroraWatch Token " + token);
                 List<NameValuePair> httpParameters = new ArrayList<NameValuePair>();
                 httpParameters.add(new BasicNameValuePair("token", token));
                 httpParameters.add(new BasicNameValuePair("level", ConvertedAlertLevel(mAlertLevel)));
                 httpParameters.add(new BasicNameValuePair("registrationId", mRegistrationId));
-                Log.i(getClass().getSimpleName(), "Making Post request for alert level " + ConvertedAlertLevel(mAlertLevel));
+                Log.i("AuroraWatch", "Making Post request for alert level " + ConvertedAlertLevel(mAlertLevel));
                 String success = HttpUtil.postRequest("https://aurora-watch-uk.appspot.com/saveAlertLevel", httpParameters);
                 if (success.equals("ERR")) {
                     mActivity.handleException(new Exception("Token validation failed"));
@@ -78,12 +78,12 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,String>  {
                 }
             }
         } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "IO Error in SaveAlertPreferenceTask... ");
+            Log.e("AuroraWatch", "IO Error in SaveAlertPreferenceTask... ");
             e.printStackTrace();
             return "ERR";
         }
         catch (Exception e) {
-            Log.e(getClass().getSimpleName(), "Error in SaveAlertPreferenceTask... ");
+            Log.e("AuroraWatch", "Error in SaveAlertPreferenceTask... ");
             e.printStackTrace();
             return "ERR";
         }
@@ -105,6 +105,7 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,String>  {
      */
     protected String fetchToken() throws IOException {
         try {
+            Log.i("AuroraWatch","Calling fetchToken...");
             return GoogleAuthUtil.getToken(mActivity, mEmail, mScope);
         } catch (UserRecoverableAuthException userRecoverableException) {
             mActivity.handleException(userRecoverableException);
