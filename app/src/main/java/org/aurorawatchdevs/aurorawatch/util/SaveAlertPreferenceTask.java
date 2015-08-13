@@ -76,6 +76,13 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,String>  {
                     mActivity.handleException(new Exception("Token validation failed"));
                     return "ERR";
                 }
+                else
+                return "OK";
+            }
+            else
+            {
+                Log.e("AuroraWatch","fetchToken() failed in SaveAlertPreferenceTask");
+                return "ERR";
             }
         } catch (IOException e) {
             Log.e("AuroraWatch", "IO Error in SaveAlertPreferenceTask... ");
@@ -87,8 +94,6 @@ public class SaveAlertPreferenceTask extends AsyncTask<Void,Void,String>  {
             e.printStackTrace();
             return "ERR";
         }
-
-        return "OK";
     }
 
     @Override

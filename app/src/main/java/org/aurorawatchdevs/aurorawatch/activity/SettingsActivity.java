@@ -102,6 +102,7 @@ public class SettingsActivity extends ActionBarActivity {
     private void OnSaveSuccess()
     {
         SaveAlertLevelToDevice();
+        setAlertButton();
     }
 
     private void OnSaveFail()
@@ -110,6 +111,7 @@ public class SettingsActivity extends ActionBarActivity {
     }
 
     private void UnSaveUiState() {
+        Log.i("AuroraWatch","UnSaveUiState called");
         alertLevel = lastAlertLevel;
         setAlertButton();
     }
@@ -217,7 +219,7 @@ public class SettingsActivity extends ActionBarActivity {
 
             if (registrationId.isEmpty()) {
                 gcmProgressDialog = ProgressDialog.show(activity,getResources().getString(R.string.pleasewait),"Registering with Google Cloud Services");
-                GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm, this, SENDER_ID, appVersion, appName);
+                final GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm, this, SENDER_ID, appVersion, appName);
                 registrationTask.setListener(new IAsyncFetchListener() {
                     public void onComplete(final String result) {
                         runOnUiThread(new Runnable() {
@@ -226,6 +228,7 @@ public class SettingsActivity extends ActionBarActivity {
                                     gcmProgressDialog.dismiss();
 
                                 if (result == "SUCCESS") {
+                                    registrationId = registrationTask.mRegistrationId;
                                     SaveAlertPreference((SettingsActivity)activity, accountName, SCOPE, alertLevel.name(), registrationId);
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Registration with Google Cloud Services failed", Toast.LENGTH_SHORT).show();
@@ -273,7 +276,7 @@ public class SettingsActivity extends ActionBarActivity {
                 });
             }
         });
-        Log.i("AuroraWatch","Calling saveAlertPreferenceTask for " + accountName + ", alertLevel:" + alertLevel + ", regId:" + registrationId);
+        Log.i("AuroraWatch", "Calling saveAlertPreferenceTask for " + accountName + ", alertLevel:" + alertLevel + ", regId:" + registrationId);
         saveAlertPreferenceTask.execute();
     }
 
