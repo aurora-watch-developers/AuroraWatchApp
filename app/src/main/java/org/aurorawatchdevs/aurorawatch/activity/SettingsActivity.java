@@ -88,21 +88,60 @@ public class SettingsActivity extends ActionBarActivity {
     }
 
     public void saveAlertLevel() {
-        try {
-            //Post alert setting to the cloud...
-            if (!SaveAlertSetting(alertLevel)) {
-                //if that failed, switch back
-                alertLevel = lastAlertLevel;
-            } else {
-                SharedPreferences settings = getSharedPreferences(appName, 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putInt("alertLevel", alertLevel.ordinal());
-                editor.apply();
-            }
-            setAlertButton();
-        } catch (Exception ex) {
-            Log.e(appName, "Saving prefs: " + ex.getMessage());
+        //Check we're online
+        if (!isDeviceOnline()) {
+            Toast.makeText(this, getResources().getString(R.string.not_online), Toast.LENGTH_SHORT).show();
+            UnSaveUiState();
         }
+
+        //Check / Prompt for account
+        if (checkUserAccount())
+            ContinueSavingAlertSettings(alertLevel);
+    }
+
+    private void OnSaveSuccess()
+    {
+        SaveAlertLevelToDevice();
+        setAlertButton();
+    }
+
+    private void OnSaveFail()
+    {
+        UnSaveUiState();
+    }
+
+    private void UnSaveUiState() {
+        Log.i("AuroraWatch","UnSaveUiState called");
+        alertLevel = lastAlertLevel;
+        setAlertButton();
+    }
+
+    private void SaveAlertLevelToDevice() {
+        SharedPreferences settings = getSharedPreferences(appName, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("alertLevel", alertLevel.ordinal());
+        editor.apply();
+    }
+
+    private boolean checkUserAccount() {
+        accountName = AccountUtils.getAccountName(this);
+        if (accountName == null) {
+            // Then the user was not found in the SharedPreferences. Either the
+            // application deliberately removed the account, or the application's
+            // data has been forcefully erased.
+            showAccountPicker();
+            return false;
+        }
+
+        Account account = AccountUtils.getGoogleAccountByName(this, accountName);
+        if (account == null) {
+            // Then the account has since been removed.
+            AccountUtils.removeAccount(this);
+            showAccountPicker();
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -172,23 +211,15 @@ public class SettingsActivity extends ActionBarActivity {
         }
     }
 
-    private boolean SaveAlertSetting(final AlertLevel alertLevel) {
-
-        if (!checkUserAccount())
-            return false;
-
-        if (!isDeviceOnline()) {
-            Toast.makeText(this, getResources().getString(R.string.not_online), Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
+    private void ContinueSavingAlertSettings(final AlertLevel alertLevel)
+    {
         if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             registrationId = getRegistrationId(getApplicationContext());
 
             if (registrationId.isEmpty()) {
                 gcmProgressDialog = ProgressDialog.show(activity,getResources().getString(R.string.pleasewait),"Registering with Google Cloud Services");
-                GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm, this, SENDER_ID, appVersion, appName);
+                final GcmRegistrationTask registrationTask = new GcmRegistrationTask(gcm, this, SENDER_ID, appVersion, appName);
                 registrationTask.setListener(new IAsyncFetchListener() {
                     public void onComplete(final String result) {
                         runOnUiThread(new Runnable() {
@@ -197,10 +228,11 @@ public class SettingsActivity extends ActionBarActivity {
                                     gcmProgressDialog.dismiss();
 
                                 if (result == "SUCCESS") {
+                                    registrationId = registrationTask.mRegistrationId;
                                     SaveAlertPreference((SettingsActivity)activity, accountName, SCOPE, alertLevel.name(), registrationId);
                                 } else {
-                                    UnSaveUiState();
                                     Toast.makeText(getApplicationContext(), "Registration with Google Cloud Services failed", Toast.LENGTH_SHORT).show();
+                                    OnSaveFail();
                                 }
                             }
                         });
@@ -211,9 +243,12 @@ public class SettingsActivity extends ActionBarActivity {
             else {
                 SaveAlertPreference(this, accountName, SCOPE, alertLevel.name(), registrationId);
             }
-            return true;
         }
-        return false;
+        else
+        {
+            OnSaveFail();
+        }
+
     }
 
     private void SaveAlertPreference(final SettingsActivity activity, String accountName, String scope, String alertLevel, String registrationId)
@@ -229,46 +264,20 @@ public class SettingsActivity extends ActionBarActivity {
                             gcmProgressDialog.dismiss();
 
                         if (result == "ERR") {
-                            UnSaveUiState();
                             Toast.makeText(getApplicationContext(), "Saving your alert preference failed", Toast.LENGTH_SHORT).show();
+                            OnSaveFail();
                         }
                         else
                         {
                             Toast.makeText(activity,"Alert preference was saved successfully",Toast.LENGTH_SHORT).show();
+                            OnSaveSuccess();
                         }
                     }
                 });
             }
         });
-
+        Log.i("AuroraWatch", "Calling saveAlertPreferenceTask for " + accountName + ", alertLevel:" + alertLevel + ", regId:" + registrationId);
         saveAlertPreferenceTask.execute();
-    }
-
-    private void UnSaveUiState()
-    {
-        alertLevel = lastAlertLevel;
-        setAlertButton();
-    }
-
-    private boolean checkUserAccount() {
-        accountName = AccountUtils.getAccountName(this);
-        if (accountName == null) {
-            // Then the user was not found in the SharedPreferences. Either the
-            // application deliberately removed the account, or the application's
-            // data has been forcefully erased.
-            showAccountPicker();
-            return false;
-        }
-
-        Account account = AccountUtils.getGoogleAccountByName(this, accountName);
-        if (account == null) {
-            // Then the account has since been removed.
-            AccountUtils.removeAccount(this);
-            showAccountPicker();
-            return false;
-        }
-
-        return true;
     }
 
     private void showAccountPicker() {
@@ -288,9 +297,12 @@ public class SettingsActivity extends ActionBarActivity {
                     accountName = data.getStringExtra(
                             AccountManager.KEY_ACCOUNT_NAME);
                     AccountUtils.setAccountName(this, accountName);
+                    Log.i("AuroraWatch","AccountPicker returned OK for " + accountName);
+                    ContinueSavingAlertSettings(alertLevel);
                 } else if (resultCode == RESULT_CANCELED) {
                     Toast.makeText(this, "This application requires a Google account.",
                             Toast.LENGTH_SHORT).show();
+                    UnSaveUiState();
                     finish();
                 }
                 return;

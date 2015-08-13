@@ -72,7 +72,7 @@ public class GcmRegistrationTask extends AsyncTask<Void, Void, String> {
 
     private void storeRegistrationId(String registrationId, int appVersion, String appName) {
         SharedPreferences settings = mContext.getSharedPreferences(appName, 0);
-        Log.i(appName, "Saving regId on app version " + appVersion);
+        Log.i(appName, "Saving regId on app version " + appVersion + " regid:" + registrationId);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(mPROPERTY_REG_ID, registrationId);
         editor.putInt(mPROPERTY_APP_VERSION, appVersion);
