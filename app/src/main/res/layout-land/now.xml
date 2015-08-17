@@ -12,7 +12,7 @@
         android:layout_margin="0dp">
 
         <TextView
-            style="@style/AWTextView"
+            style="@style/TextStyle"
             android:textStyle="bold"
             android:id="@+id/alertLevelSummary"
             android:textColor="#1f0a00"
@@ -45,7 +45,7 @@
                 android:layout_weight="50">
 
                 <TextView
-                    style="@style/AWTextView"
+                    style="@style/TextStyle"
                     android:text="@string/disturbanceLevelLabel"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
@@ -58,13 +58,13 @@
                     android:gravity="center_horizontal">
 
                     <TextView
-                        style="@style/AWTextView"
+                        style="@style/TextStyle"
                         android:textSize="64sp"
                         android:id="@+id/disturbanceLevelValue"
                         android:layout_gravity="bottom"/>
 
                     <TextView
-                        style="@style/AWTextView"
+                        style="@style/TextStyle"
                         android:id="@+id/disturbanceLevelUnit"
                         android:text="@string/disturbanceLevelUnit"
                         android:layout_gravity="bottom"/>
@@ -81,7 +81,7 @@
                 android:layout_gravity="center">
 
                 <TextView
-                    style="@style/AWTextView"
+                    style="@style/TextStyle"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/alertLevelDetail"
                     android:id="@+id/alertLevelDetail" />
@@ -97,7 +97,7 @@
             android:layout_weight="25">
 
             <TextView
-                style="@style/AWTextView"
+                style="@style/TextStyle"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/retrievalTime"
                 android:id="@+id/retrievalTime" />
