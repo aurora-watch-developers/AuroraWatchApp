@@ -1,5 +1,6 @@
 <resources>
     <style name="ButtonStyle" parent="android:Widget.Material.Button">
         <item name="android:buttonStyle">@android:style/Widget.Material.Button</item>
+        <item name="android:alpha">0.7</item>
     </style>
 </resources>
