@@ -18,7 +18,6 @@ public class MoreFragment extends Fragment {
     RelativeLayout twitterButton;
     RelativeLayout facebookButton;
     RelativeLayout flickrButton;
-    RelativeLayout faqButton;
     RelativeLayout websiteButton;
 
     Boolean mMeasured = false;
@@ -40,7 +39,6 @@ public class MoreFragment extends Fragment {
         twitterButton = (RelativeLayout)getView().findViewById(R.id.twitterButton);
         facebookButton = (RelativeLayout)getView().findViewById(R.id.facebookButton);
         flickrButton = (RelativeLayout)getView().findViewById(R.id.flickrButton);
-        faqButton = (RelativeLayout)getView().findViewById(R.id.faqButton);
         websiteButton = (RelativeLayout)getView().findViewById(R.id.awUrlButton);
 
         twitterButton.setOnClickListener(new View.OnClickListener() {

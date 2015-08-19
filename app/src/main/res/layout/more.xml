@@ -10,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
         android:text="@string/appName"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -25,17 +25,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp" />
-
-    <include
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        layout="@layout/faqbutton"
-        android:id="@+id/faqButton"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp" />
-
 
     <include
         android:layout_width="match_parent"
