@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/AWTextView"
+            style="@style/TextStyle"
             android:text="@string/networkErrorTitle"
             android:drawableLeft="@drawable/ic_action_warning"
             android:drawablePadding="5dp"/>
@@ -28,7 +28,7 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/AWTextView"
+            style="@style/TextStyle"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/networkError" />
     </LinearLayout>
@@ -41,7 +41,7 @@
         android:orientation="vertical">
 
         <Button
-            style="@style/AWTextView"
+            style="@style/TextStyle"
             android:id="@+id/btnOpenSettings"
             android:drawableLeft="@drawable/ic_action_settings"
             android:drawablePadding="5dp"
