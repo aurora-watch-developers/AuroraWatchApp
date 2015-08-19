@@ -16,6 +16,7 @@ import org.aurorawatchdevs.aurorawatch.fragment.MoreFragment;
 import org.aurorawatchdevs.aurorawatch.fragment.NavigationDrawerFragment;
 import org.aurorawatchdevs.aurorawatch.fragment.NowFragment;
 import org.aurorawatchdevs.aurorawatch.fragment.Past24HrFragment;
+import org.aurorawatchdevs.aurorawatch.util.AppRater;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -44,6 +45,9 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        // Call the rating checker
+        AppRater.app_launched(this);
     }
 
     @Override
