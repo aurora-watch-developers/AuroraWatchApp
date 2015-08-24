@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.aurorawatchdevs.aurorawatch.R;
 
 /**
  * Created by jamesb on 19/08/2015.
@@ -51,18 +54,15 @@ public class AppRater {
 
     public static void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
         final Dialog dialog = new Dialog(mContext);
+        dialog.setContentView(R.layout.apprater);
         dialog.setTitle("Rate " + APP_TITLE);
 
-        LinearLayout ll = new LinearLayout(mContext);
-        ll.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.ll);
 
-        TextView tv = new TextView(mContext);
-        tv.setText("If you enjoy using " + APP_TITLE + ", please take a moment to rate it. Thanks for your support!");
-        tv.setWidth(240);
-        tv.setPadding(4, 0, 4, 10);
-        ll.addView(tv);
+        TextView tv = (TextView) dialog.findViewById(R.id.tv);
+        tv.setText("If you enjoy using " + APP_TITLE + ", please take a moment to rate it. Thanks!");
 
-        Button b1 = new Button(mContext);
+        Button b1 = (Button) dialog.findViewById(R.id.b1);
         b1.setText("Rate " + APP_TITLE);
         b1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -70,18 +70,16 @@ public class AppRater {
                 dialog.dismiss();
             }
         });
-        ll.addView(b1);
 
-        Button b2 = new Button(mContext);
+        Button b2 = (Button) dialog.findViewById(R.id.b2);
         b2.setText("Remind me later");
         b2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-        ll.addView(b2);
 
-        Button b3 = new Button(mContext);
+        Button b3 = (Button) dialog.findViewById(R.id.b3);
         b3.setText("No, thanks");
         b3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -92,8 +90,6 @@ public class AppRater {
                 dialog.dismiss();
             }
         });
-        ll.addView(b3);
 
-        dialog.setContentView(ll);
         dialog.show();
     }}
