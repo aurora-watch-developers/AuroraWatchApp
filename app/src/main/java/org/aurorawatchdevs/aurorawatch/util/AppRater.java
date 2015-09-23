@@ -55,11 +55,7 @@ public class AppRater {
     public static void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
         final Dialog dialog = new Dialog(mContext);
         dialog.setContentView(R.layout.apprater);
-        dialog.setTitle("Rate " + APP_TITLE);
-
-        LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.ll);
-
-        TextView tv = (TextView) dialog.findViewById(R.id.tv);
+        dialog.setTitle(APP_TITLE);
 
         Button b1 = (Button) dialog.findViewById(R.id.b1);
         b1.setOnClickListener(new View.OnClickListener() {
