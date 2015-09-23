@@ -57,4 +57,8 @@
     <string name="pleasewait">Please wait</string>
     <string name="notification_body"> alert of auroral activity was received!</string>
     <string name="notification_header">AuroraWatch activity detected!</string>
+    <string name="rating_no_thanks">No thanks</string>
+    <string name="rating_remind_later">Remind me later</string>
+    <string name="rating_rate">Rate Aurorawatch UK</string>
+    <string name="rating_header">If you enjoy using Aurorawatch UK, please take a moment to rate it. Thanks!</string>
 </resources>

@@ -60,10 +60,8 @@ public class AppRater {
         LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.ll);
 
         TextView tv = (TextView) dialog.findViewById(R.id.tv);
-        tv.setText("If you enjoy using " + APP_TITLE + ", please take a moment to rate it. Thanks!");
 
         Button b1 = (Button) dialog.findViewById(R.id.b1);
-        b1.setText("Rate " + APP_TITLE);
         b1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
@@ -72,7 +70,6 @@ public class AppRater {
         });
 
         Button b2 = (Button) dialog.findViewById(R.id.b2);
-        b2.setText("Remind me later");
         b2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialog.dismiss();
@@ -80,7 +77,6 @@ public class AppRater {
         });
 
         Button b3 = (Button) dialog.findViewById(R.id.b3);
-        b3.setText("No, thanks");
         b3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (editor != null) {

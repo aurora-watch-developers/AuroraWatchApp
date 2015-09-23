@@ -8,23 +8,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv"
-        android:padding="4dp" />
+        android:padding="4dp"
+        android:text="@string/rating_header" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/b1"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:text="@string/rating_rate" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/b2"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:text="@string/rating_remind_later" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/b3"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:text="@string/rating_no_thanks" />
 </LinearLayout>
