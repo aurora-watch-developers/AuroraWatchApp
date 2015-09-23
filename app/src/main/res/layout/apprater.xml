@@ -4,31 +4,63 @@
     android:layout_height="match_parent"
     android:id="@+id/ll">
 
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv"
-        android:padding="4dp"
-        android:text="@string/rating_header" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_launcher"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/tv"
+            android:padding="4dp"
+            android:text="@string/rating_header"
+            android:layout_marginRight="15dp"
+            android:gravity="fill_vertical" />
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/b1"
         android:layout_gravity="center_horizontal"
-        android:text="@string/rating_rate" />
+        android:text="@string/rating_rate"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/b2"
         android:layout_gravity="center_horizontal"
-        android:text="@string/rating_remind_later" />
+        android:text="@string/rating_remind_later"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/b3"
         android:layout_gravity="center_horizontal"
-        android:text="@string/rating_no_thanks" />
+        android:text="@string/rating_no_thanks"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp" />
 </LinearLayout>
