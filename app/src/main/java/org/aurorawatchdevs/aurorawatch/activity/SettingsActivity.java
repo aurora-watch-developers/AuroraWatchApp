@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -39,6 +40,7 @@ import org.aurorawatchdevs.aurorawatch.util.AccountUtils;
 import org.aurorawatchdevs.aurorawatch.util.GcmRegistrationTask;
 import org.aurorawatchdevs.aurorawatch.util.IAsyncFetchListener;
 import org.aurorawatchdevs.aurorawatch.util.SaveAlertPreferenceTask;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -62,6 +64,11 @@ public class SettingsActivity extends ActionBarActivity {
 
     private RangeSeekBar alertTimeSlider;
     private LinearLayout alertTimeSliderContainer;
+    private Integer alertSuppressStart = 6;
+    private Integer alertSuppressEnd = 18;
+
+    private TextView alertRangeFrom;
+    private TextView alertRangeTo;
 
     private String appName;
     private AlertLevel alertLevel;
@@ -159,6 +166,16 @@ public class SettingsActivity extends ActionBarActivity {
         alertTimeSliderContainer = (LinearLayout)findViewById(R.id.alertTimeSliderContainer);
         alertTimeSlider = new RangeSeekBar(0,24,this);
         alertTimeSliderContainer.addView(alertTimeSlider);
+        alertRangeFrom = (TextView)findViewById(R.id.txtHrsFrom);
+        alertRangeTo = (TextView)findViewById(R.id.txtHrsTo);
+        alertTimeSlider.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {
+                alertSuppressStart = Integer.parseInt(minValue.toString());
+                alertSuppressEnd = Integer.parseInt(maxValue.toString());
+                UpdateDisplayValues();
+            }
+        });
 
         alertNone = (Button) findViewById(R.id.btnAlertNone);
         alertMin = (Button) findViewById(R.id.btnAlertMinor);
@@ -200,6 +217,8 @@ public class SettingsActivity extends ActionBarActivity {
                 saveAlertLevel();
             }
         });
+
+        UpdateDisplayValues();
     }
 
     @Override
@@ -218,6 +237,12 @@ public class SettingsActivity extends ActionBarActivity {
                 Log.d("tag", Integer.toHexString(item.getItemId()));
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void UpdateDisplayValues()
+    {
+        alertRangeFrom.setText(alertSuppressStart.toString());
+        alertRangeTo.setText(alertSuppressEnd.toString());
     }
 
     private void ContinueSavingAlertSettings(final AlertLevel alertLevel)

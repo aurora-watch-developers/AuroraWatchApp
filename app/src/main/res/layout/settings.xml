@@ -74,6 +74,36 @@
         android:layout_margin="10dp"
         android:id="@+id/alertTimeSliderContainer">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/alert_range_info"
+            android:id="@+id/txtRangeInfo" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/txtHrsFrom"
+                android:layout_weight="50" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/txtHrsTo"
+                android:layout_weight="50"
+                android:gravity="right" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
