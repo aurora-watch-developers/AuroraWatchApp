@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -33,6 +34,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.aurorawatchdevs.aurorawatch.AlertLevel;
 import org.aurorawatchdevs.aurorawatch.R;
+import org.aurorawatchdevs.aurorawatch.RangeSeekBar;
 import org.aurorawatchdevs.aurorawatch.util.AccountUtils;
 import org.aurorawatchdevs.aurorawatch.util.GcmRegistrationTask;
 import org.aurorawatchdevs.aurorawatch.util.IAsyncFetchListener;
@@ -57,6 +59,9 @@ public class SettingsActivity extends ActionBarActivity {
     private Button alertMin;
     private Button alertAmber;
     private Button alertRed;
+
+    private RangeSeekBar alertTimeSlider;
+    private LinearLayout alertTimeSliderContainer;
 
     private String appName;
     private AlertLevel alertLevel;
@@ -150,6 +155,10 @@ public class SettingsActivity extends ActionBarActivity {
 
         setContentView(R.layout.settings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        alertTimeSliderContainer = (LinearLayout)findViewById(R.id.alertTimeSliderContainer);
+        alertTimeSlider = new RangeSeekBar(0,24,this);
+        alertTimeSliderContainer.addView(alertTimeSlider);
 
         alertNone = (Button) findViewById(R.id.btnAlertNone);
         alertMin = (Button) findViewById(R.id.btnAlertMinor);

@@ -67,4 +67,13 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp" />
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:id="@+id/alertTimeSliderContainer">
+
+    </LinearLayout>
+
 </LinearLayout>
