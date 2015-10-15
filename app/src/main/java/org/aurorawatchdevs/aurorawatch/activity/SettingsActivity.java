@@ -99,6 +99,17 @@ public class SettingsActivity extends ActionBarActivity {
         }
     }
 
+    private void loadAlertTimes()
+    {
+        try {
+            SharedPreferences settings = getSharedPreferences(appName, 0);
+            alertSuppressStart = settings.getInt("alertSuppressStart", 6);
+            alertSuppressEnd = settings.getInt("alertSuppressEnd",18);
+        } catch (Exception ex) {
+            Log.e(appName, "Loading prefs: " + ex.getMessage());
+        }
+    }
+
     public void saveAlertLevel() {
         //Check we're online
         if (!isDeviceOnline()) {
@@ -109,6 +120,15 @@ public class SettingsActivity extends ActionBarActivity {
         //Check / Prompt for account
         if (checkUserAccount())
             ContinueSavingAlertSettings(alertLevel);
+    }
+
+    private void saveAlertTimes()
+    {
+        SharedPreferences settings = getSharedPreferences(appName, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("alertSuppressStart", alertSuppressStart);
+        editor.putInt("alertSuppressEnd", alertSuppressEnd);
+        editor.apply();
     }
 
     private void OnSaveSuccess()
@@ -160,6 +180,7 @@ public class SettingsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        appName = getString(R.string.appName);
         setContentView(R.layout.settings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -168,12 +189,17 @@ public class SettingsActivity extends ActionBarActivity {
         alertTimeSliderContainer.addView(alertTimeSlider);
         alertRangeFrom = (TextView)findViewById(R.id.txtHrsFrom);
         alertRangeTo = (TextView)findViewById(R.id.txtHrsTo);
+        loadAlertTimes();
+        alertTimeSlider.setSelectedMinValue(alertSuppressStart);
+        alertTimeSlider.setSelectedMaxValue(alertSuppressEnd);
+
         alertTimeSlider.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {
                 alertSuppressStart = Integer.parseInt(minValue.toString());
                 alertSuppressEnd = Integer.parseInt(maxValue.toString());
                 UpdateDisplayValues();
+                saveAlertTimes();
             }
         });
 
@@ -181,7 +207,6 @@ public class SettingsActivity extends ActionBarActivity {
         alertMin = (Button) findViewById(R.id.btnAlertMinor);
         alertAmber = (Button) findViewById(R.id.btnAlertAmber);
         alertRed = (Button) findViewById(R.id.btnAlertRed);
-        appName = getString(R.string.appName);
         activity = this;
 
         loadAlertLevel();
